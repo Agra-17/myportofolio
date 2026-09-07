@@ -10,46 +10,34 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1 style="color: aliceblue;">
-        BUDI
-    </h1>
     <header class="site-header">
-        <div class="container">
+        <div class="container header-inner">
             <a href="#profile" class="brand">Agra</a>
-            <nav class="main-nav">
+
+            <nav class="main-nav" id="main-nav">
                 <a href="#profile">Home</a>
-
-                <div class="nav-dropdown">
-                    <button class="dropdown-toggle" type="button">
-                        About Me
-                        <span class="caret">▾</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a href="#education">Education</a>
-                        <a href="#experience">Experience</a>
-                        <a href="#skills">Skills</a>
-                    </div>
-                </div>
-
+                <a href="#aboutme">About Me</a>
+                <a href="#education">Education</a>
+                <a href="#experience">Experience</a>
+                <a href="#achievement">Achievement</a>
                 <a href="#contact">Contact</a>
             </nav>
         </div>
     </header>
 
-    <main>
+    <main class="page-content">
         <section class="hero" id="profile">
             <div class="container hero-grid">
-                <div class="hero-identity">
+                <div class="hero-identity hero-content">
                     <p class="hero-kicker">Computer Science &middot; Universitas Indonesia</p>
                     <h1>Muh. Agra Putra Davyza Chaniago</h1>
                 </div>
                 <div class="hero-photo">
-                    <div class="photo-block"></div>
                     <img class="avatar" src="/static/img/foto agra.jpeg" alt="Photo of Agra">
                 </div>
-                <div class="hero-details">
+                <div class="hero-details hero-content">
                     <p class="bio">I am a student with a proven track record of national-level achievements in Mathematics and Informatics, driven by a strong passion for analytical thinking and problem-solving. I have developed proficiency in Python, particularly with Pandas, NumPy, and Matplotlib, while exploring data analysis, visualization, and machine learning fundamentals. Beyond academics, my experience in organizational and social initiatives has strengthened my leadership, communication, and teamwork skills. Combining academic excellence, technical competence, and organizational experience, I am an adaptive and solution-oriented individual eager to contribute to innovation in technology, data science, and artificial intelligence.</p>
-                    <dl class="meta-list">
+                    <dl class="meta-list profile-meta">
                         <div class="meta-row">
                             <dt>NPM</dt>
                             <dd>2506624833</dd>
@@ -59,33 +47,82 @@
                             <dd>S1 Ilmu Komputer</dd>
                         </div>
                     </dl>
-                    <div class="social-links">
+                    <div class="social-links profile-links" id="contact">
                         <a href="https://github.com/Agra-17" class="social-link">GitHub</a>
                         <a href="https://linkedin.com/in/muh-agra-putra-davyza-chaniago-01a563276/" class="social-link">LinkedIn</a>
-                        <a href="muhammadagradc@gmail.com" class="social-link">Email</a>
+                        <a href="mailto:muhammadagradc@gmail.com" class="social-link">Email</a>
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="about-section" id="aboutme">
+            <!-- untuk bagian Education -->
             <div class="container about-grid">
-                <article class="info-card" id="education">
-                    <span class="card-badge badge-rose">Education</span>
-                    <h2>Education</h2>
-                    <p>Computer Science student at Universitas Indonesia, focused on analytical thinking, software development, and data-driven problem solving.</p>
-                </article>
-
-                <article class="info-card" id="experience">
-                    <span class="card-badge badge-peach">Experience</span>
+            <article class="about-card education-card" id="education">
+                <h2>Education</h2>
+                    <h4>Computer Science University of Indonesia (2025 - now)</h4>
+                    <p>Focused on computational thinking, software development, data analysis, problem solving, and collaborative communication.</p>
+                
+                    <h4>MAN Insan Cendekia Serpong (2022 - 2025)</h4>
+                    <p>Focused on discipline, leadership, competitive achievement, and personal growth through organizational involvement and academic competitions.</p>
+                    
+                    <h4>SMP Al-Azhar Mandiri Palu (2019 - 2022)</h4>
+                    <p>Focused on mathematical reasoning, logical thinking, problem solving</p>
+            </article>
+            
+            <!-- untuk bagian Experience -->
+            <article class="about-card experience-card" id="experience">
+                <div class="experience-heading">
                     <h2>Experience</h2>
-                    <p>Active in organization and community initiatives, building leadership, communication, and collaboration through impactful projects and events.</p>
-                </article>
+                    <span class="experience-heading-line"></span>
+                </div>
+                <div class="experience-list">
+                    <div class="experience-item">
+                        <div class="experience-marker"></div>
+                        <div class="experience-content">
+                            <h3>Teaching Assistant in Univariate Calculus</h3>
+                            <p>Universitas Indonesia</p>
+                        </div>
+                        <time class="experience-date">August 2026 - now</time>
+                    </div>
+                    <div class="experience-item">
+                        <div class="experience-marker"></div>
+                        <div class="experience-content">
+                            <h3>Tutor Mathematics and Scholastic</h3>
+                            <p>TamanSchool</p>
+                        </div>
+                        <time class="experience-date">September 2025 - now</time>
+                    </div>
+                    <div class="experience-item">
+                        <div class="experience-marker"></div>
+                        <div class="experience-content">
+                            <h3>Vice Person in Charge of Media Partner</h3>
+                            <p>COMPFEST 18</p>
+                        </div>
+                        <time class="experience-date">2026</time>
+                    </div>
+                    <div class="experience-item">
+                        <div class="experience-marker"></div>
+                        <div class="experience-content">
+                            <h3>Staff of Adkesma Department</h3>
+                            <p>BEM Fasilkom UI</p>
+                        </div>
+                        <time class="experience-date">2026</time>
+                    </div>
+                </div>
+            </article>
 
-                <article class="info-card" id="skills">
-                    <span class="card-badge badge-lavender">Skills</span>
-                    <h2>Skills</h2>
-                    <p>Python, Pandas, NumPy, Matplotlib, data analysis, visualization, and foundational machine learning concepts.</p>
+            <!-- untuk bagian Achivement -->
+            <article class="about-card achievement-card" id="achievement">
+                <h2>Achievement</h2>
+                    <h3>Grantee of ParagonCorp Scholarship Program 2025</h3>
+                        <p>ParagonCorp Scholarship Program (PSP) 2025 recipient, ranked in the top 1.4% of 21,000+ applicants nationwide, with opportunities in leadership, mentorship, and personal development.</p>
+                    <h3>Bronze Medal, Olimpiade Sains Nasional (OSN) 2021, Mathematics</h3>
+                        <p>Achieved at the national level in Junior High School, demonstrating strong mathematical reasoning, analytical thinking, and problem-solving skills.</p>
+                    <h3>Silver Medal, Kompetisi Sains Ruangguru (KSR) 2021, Mathematics</h3>
+                        <p>Achieved at the national level in Junior High School, strengthening mathematical problem-solving, logical reasoning, and competitive skills.</p>
+                
                 </article>
             </div>
         </section>
