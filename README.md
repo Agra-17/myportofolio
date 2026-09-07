@@ -79,11 +79,11 @@ myportofolio/
 ### AI Disclosure
 Proyek ini menggunakan bantuan AI untuk membantu saya ketika memahami dan juga menguide ketika saya ingin melakukan perubahan ataupun ketika ada bug. Hal yang paling membantu bagi saya, yaitu membantu untuk mendesain dan membuat struktur file CSS terlihat lebih rapih. Saya menggunakan AI dengan dengan melihat terlebih dahulu referensi website portofolio kemudian menanyakan apa yang bisa saya tambahkan dan juga improve. Informasi yang diberikan pun saya kembali dalami menggunakan beberapa website seperti W3schools dan juga tutorial di Youtube.
 
-AI assistance reference: https://claude.ai/share/a32fe957-994b-4df2-a7ef-426cc767986c
-AI Tools : github copilot chat
-Reference Deep Search : W3school, Youtube, dan petani kode
--https://www.petanikode.com/tutorial/css/
--https://www.w3schools.com/html/default.asp 
--https://www.w3schools.com/css/default.asp
--https://www.youtube.com/watch?v=FZVLz5_RNho 
+AI assistance reference: https://claude.ai/share/a32fe957-994b-4df2-a7ef-426cc767986c  
+AI Tools : github copilot chat  
+Reference Deep Search : W3school, Youtube, dan petani kode  
+-https://www.petanikode.com/tutorial/css/  
+-https://www.w3schools.com/html/default.asp   
+-https://www.w3schools.com/css/default.asp  
+-https://www.youtube.com/watch?v=FZVLz5_RNho   
 
