@@ -25,7 +25,8 @@ def show_experience(request):
 def achievement_list(request):
     achievements = Achievement.objects.all()
     context = {
+        'name': "Agra",
         'achievements' : achievements,
     }
 
-    return render(request, 'achievement.html', context)
+    return render(request, 'achievements.html', context)
