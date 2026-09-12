@@ -19,7 +19,7 @@
                 <a href="#aboutme">About Me</a>
                 <a href="#education">Education</a>
                 <a href="#experience">Experience</a>
-                <a href="#achievaement">Achievement</a>
+                <a href="#achievement">Achievement</a>
                 <a href="#contact">Contact</a>
                 <a href="{% url 'main:show_main' %}">Profile</a>
                 <a href="{% url 'main:show_experience' %}">Experience</a>
@@ -132,29 +132,6 @@
                 
                 </article>
 
-            <article class="about-card students-card" id="students">
-                <h2>Daftar Mahasiswa</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>NPM</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for mhs in mahasiswa %}
-                        <tr>
-                            <td>{{ mhs.nama }}</td>
-                            <td>{{ mhs.npm }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="2">Belum ada data mahasiswa.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </article>
             </div>
         </section>
     </main>
