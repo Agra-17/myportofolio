@@ -24,3 +24,23 @@ class Experience(models.Model):
     @property
     def is_ongoing(self):
         return self.ended_at is None
+
+
+class Achievement(models.Model):
+    ACHIEVEMENT_SCALE = [
+        ('international', 'International'),
+        ('national', 'National'),
+        ('provincial', 'Provincial'),
+        ('district', "District"),
+    ] 
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    scale = models.CharField(max_length=20, choices=ACHIEVEMENT_SCALE, default='national')
+    date_achieved = models.DateField()
+    issuer = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+        
