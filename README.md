@@ -52,6 +52,13 @@ Then open:
 http://127.0.0.1:8000/
 ```
 
+### Assignment 1
+1. "Section, article dan aside" sangat membantu dalam menyusun struktur website yang baik, Hal ini sangat diperlukan karena web yang static sangat bergantung erat dengan struktur HTML. Beberapa tag tersebut mempermudah bagi pembuat website jika nantinya ada bug dan juga maintain website kedepannya. Adanya tag "section" membuat struktur pengelompokkan yang masih dalam satu kesatuan tema. Tag "article" sendiri menjadi tag yang sangat penting bagi konten atau informasi yang dapat berdiri dengan sendiri. Dan untuk tag "aside" ini merupakan tag bagi konten pendukung yang bermakna konten yang diberikan pada tag ini tidak berhubungan langsung dengan konten utamanya/sekitarnya. Dengan adanya struktur ini kode yang telah dibuat dapat dengan mudah untuk dimaintain bila ada bug dan juga lebih mudah untuk mendesainnya.  
+
+2. Tantangan ketika membuat CSS yang responsive bagi saya adalah di pembuatan navbar. Disini saya mempelajari suatu hal yaitu overflow-x dan tidak lupa menambahkannya ke @media agar bisa untuk di atur di beberapa kondisi yang di masukkan. Untuk selebihnya karena sudah ada contoh yang diberikan dari template yaitu bentuk responsif dari fotonya, jadi bisa di ikuti untuk beberapa section seperti Education, Experience dan juga Achievement. Hal ini saya lakukan karena ketika layarnya cukup lebar (dibuka menggunakan menggunakan laptop)  bagian education dan experience saya pisahkan menggunakan grid 2 bagian, tetapi ketika diperkecil saya ubah menjadi 1 bagian kebawah saja.  
+
+3. Batasan yang membuat saya optimal adalah belum bisa mengupdate secara real time, misalnya ketika saya memiliki experience tambahan atau achievement tambahan. Ketika hal itu terjadi saya harus menambahkannya dengan manual bukan dengan database. Hal ini juga menjadi pertimbangan saya ketika ingin membuat section project kedepannya yang mana hal itu perlu adanya database yang menyimpan project2nya saya agar tidak perlu menginput dan mendesainya secara manual. Dengan adanya iterasi yang dinamis saya dapat mengontrol project apa saja yang akan saya tampilkan dan juga ada update ketika ada project baru.  
+
 
 
 ### Assignment 2
