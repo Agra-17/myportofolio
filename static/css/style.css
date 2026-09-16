@@ -113,7 +113,54 @@ h1, .brand {
     background-color: rgba(79, 128, 104, 0.12);
 }
 
+.site-notifications {
+    left: 50%;
+    max-width: 960px;
+    padding: 0 1.5rem;
+    pointer-events: none;
+    position: fixed;
+    top: 5.5rem;
+    transform: translateX(-50%);
+    width: 100%;
+    z-index: 60;
+}
+
+.site-notification {
+    align-items: center;
+    background: var(--accent-deep, #244f3d);
+    border: 1px solid var(--accent-dark);
+    border-left: 0.35rem solid var(--accent);
+    border-radius: var(--radius);
+    box-shadow: 0 0.8rem 2rem rgba(25, 51, 42, 0.16);
+    color: var(--paper);
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0.9rem 1rem;
+    pointer-events: auto;
+}
+
+.site-notification--error,
+.site-notification--warning {
+    border-left-color: #b47745;
+}
+
+.site-notification__close {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.35rem;
+    line-height: 1;
+    padding: 0.15rem;
+}
+
 @media (max-width: 640px) {
+    .site-notifications {
+        padding: 0 1.25rem;
+        top: 8.8rem;
+    }
+
     .site-header .container {
         align-items: stretch;
         flex-direction: column;

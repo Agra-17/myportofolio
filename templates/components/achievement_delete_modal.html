@@ -1,0 +1,42 @@
+<div class="achievement-delete-trigger">
+    <button type="button"
+            class="button button-danger"
+            popovertarget="delete-achievement-{{ achievement.id }}"
+            aria-label="Hapus {{ achievement.title }}"
+            title="Hapus achievement">
+        Hapus
+    </button>
+</div>
+<div id="delete-achievement-{{ achievement.id }}"
+     class="achievement-delete-modal"
+     popover="auto"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="delete-achievement-title-{{ achievement.id }}">
+    <button type="button"
+            class="achievement-delete-modal__backdrop"
+            popovertarget="delete-achievement-{{ achievement.id }}"
+            popovertargetaction="hide"
+            aria-label="Tutup konfirmasi hapus"></button>
+    <div class="achievement-delete-modal__content">
+        <button type="button"
+                class="achievement-delete-modal__close"
+                popovertarget="delete-achievement-{{ achievement.id }}"
+                popovertargetaction="hide"
+                aria-label="Tutup konfirmasi hapus">×</button>
+        <p class="achievement-delete-modal__eyebrow">Konfirmasi tindakan</p>
+        <h2 id="delete-achievement-title-{{ achievement.id }}">Hapus achievement?</h2>
+        <p>Data yang dihapus tidak dapat dikembalikan. Pastikan Anda memang ingin menghapus:</p>
+        <strong class="achievement-delete-modal__title">{{ achievement.title }}</strong>
+        <div class="achievement-delete-modal__actions">
+            <button type="button"
+                    class="button button-secondary"
+                    popovertarget="delete-achievement-{{ achievement.id }}"
+                    popovertargetaction="hide">Batal</button>
+            <form method="post" action="{% url 'main:delete_achievement' achievement.id %}">
+                {% csrf_token %}
+                <button type="submit" class="button button-danger">Hapus achievement</button>
+            </form>
+        </div>
+    </div>
+</div>

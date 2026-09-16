@@ -27,13 +27,21 @@ def show_experience(request):
     return render(request, "experience.html", context)
 
 def achievement_list(request):
-    achievements = Achievement.objects.all()
-    context = {
-        'name': "Agra",
-        'achievements' : achievements,
-    }
+    json_response = get_achievements_json(request)
 
-    return render(request, 'achievements.html', context)
+    achievements = serializers.deserialize(
+        "json",
+        json_response.content.decode("utf-8"),
+    )
+    achievements = [project.object for project in achievements]
+    title_query = request.GET.get("title", "").strip()
+
+    context = {
+        "name": "Agra",
+        "achievements": achievements,
+        "title_query": title_query,
+    }
+    return render(request, "achievements.html", context)
 
 def create_achievement(request):
     form = AchievementForm(request.POST or None)
@@ -48,3 +56,24 @@ def create_achievement(request):
         "form": form,
     }
     return render(request, "achievements_form.html", context)
+
+def get_achievements_json(request):
+    title_query = request.GET.get("title", "").strip()
+    achievements = Achievement.objects.all()
+
+    if title_query:
+        achievements = achievements.filter(title__icontains=title_query)
+
+    achievements_json = serializers.serialize("json", achievements)
+    return HttpResponse(achievements_json, content_type="application/json")
+
+
+def delete_achievement(request, achievement_id):
+    achievement = get_object_or_404(Achievement, pk=achievement_id)
+
+    if request.method == "POST":
+        achievement.delete()
+        messages.success(request, "achievement berhasil dihapus!")
+        return redirect("main:show_achievements")
+
+    return redirect("main:show_achievements")

@@ -21,6 +21,17 @@
 
         <section class="achievement-list-section">
             <div class="container">
+                <div class="achievement-controls">
+                    <form method="get" class="achievement-search">
+                        <label class="achievement-search-label" for="achievement-search-input">Cari achievement</label>
+                        <div class="achievement-search-row">
+                            <input id="achievement-search-input" type="search" name="title" value="{{ title_query }}" class="achievement-search__input" placeholder="Cari berdasarkan judul...">
+                            <button type="submit" class="achievement-control-button">Cari</button>
+                        </div>
+                    </form>
+                    <a href="{% url 'main:create_achievements' %}" class="achievement-add-link">+ Tambah Achievement</a>
+                </div>
+
                 <div class="achievement-list-heading">
                     <p>Selected work &amp; recognition</p>
                     <span>01 — {% if achievements %}{{ achievements|length|stringformat:"02d" }}{% else %}00{% endif %}</span>
@@ -40,7 +51,7 @@
                                     <p>{{ achievement.description }}</p>
                                     <p class="achievement-issuer"><span>Issued by</span>{{ achievement.issuer }}</p>
                                 </div>
-                                <span class="achievement-arrow" aria-hidden="true">↗</span>
+                                {% include 'components/achievement_delete_modal.html' with achievement=achievement %}
                             </article>
                         {% endfor %}
                     </div>
