@@ -1,6 +1,5 @@
 from main.forms import AchievementForm, ExperienceForm
 from main.models import Achievement, Experience
-from main.models import Experience
 from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse
@@ -86,7 +85,7 @@ def create_experience(request):
         "name": "Agra",
         "form": form,
     }
-    return render(request,'create_experience.html', context)
+    return render(request,'experience_form.html', context)
 
 def get_experience_json(request):
     title_query = request.GET.get("title", "").strip()

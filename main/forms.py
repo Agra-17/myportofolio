@@ -8,7 +8,7 @@ class AchievementForm(ModelForm):
         fields = [
             "title",
             "description",
-            "category",
+            "scale",
             "date_achieved",
             "issuer",
         ]
@@ -53,7 +53,7 @@ class AchievementForm(ModelForm):
 
 class ExperienceForm(ModelForm):
     class Meta:
-        model = Achievement
+        model = Experience
         fields = [
             "title",
             "description",
@@ -102,7 +102,7 @@ class ExperienceForm(ModelForm):
             ),
             "ended_at": TextInput(
                 attrs={
-                    "placeholder": "Nama Penyelenggara",
+                    "type": "date",
                 }
             ),
         }
