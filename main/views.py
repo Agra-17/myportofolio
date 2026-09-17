@@ -1,5 +1,5 @@
-from main.forms import AchievementForm
-from main.models import Achievement
+from main.forms import AchievementForm, ExperienceForm
+from main.models import Achievement, Experience
 from main.models import Experience
 from django.contrib import messages
 from django.core import serializers
@@ -17,7 +17,6 @@ def show_main(request):
         ),
     }
     return render(request, "index.html", context)
-
 
 def show_experience(request):
     context = {
@@ -67,7 +66,6 @@ def get_achievements_json(request):
     achievements_json = serializers.serialize("json", achievements)
     return HttpResponse(achievements_json, content_type="application/json")
 
-
 def delete_achievement(request, achievement_id):
     achievement = get_object_or_404(Achievement, pk=achievement_id)
 
@@ -77,3 +75,35 @@ def delete_achievement(request, achievement_id):
         return redirect("main:show_achievements")
 
     return redirect("main:show_achievements")
+
+def create_experience(request):
+    form = ExperienceForm(request.POST or None)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        messages.success(request, "Experience baru berhasil ditambahkan!")
+        return redirect("main:show_experience")
+    context = {
+        "name": "Agra",
+        "form": form,
+    }
+    return render(request,'create_experience.html', context)
+
+def get_experience_json(request):
+    title_query = request.GET.get("title", "").strip()
+    experiences = Experience.objects.all()
+
+    if title_query:
+        experiences = experiences.filter(title__icontains=title_query)
+
+    experiences_json = serializers.serialize("json", experiences)
+    return HttpResponse(experiences_json, content_type="application/json")
+
+def delete_experience(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+
+    if request.method == "POST":
+        experience.delete()
+        messages.success(request, "Experience berhasil dihapus!")
+        return redirect("main:show_experience")
+
+    return redirect("main:show_experience")
