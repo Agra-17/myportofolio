@@ -1,5 +1,3 @@
-/* Experience page: an editorial project index built on the portfolio palette. */
-
 .experience-page {
     --experience-lime: #c9d96f;
     --experience-soft: #e7edd9;
@@ -7,6 +5,7 @@
 }
 
 .experience-main {
+    --accent-soft: #e3eee7;
     overflow: hidden;
 }
 
@@ -67,6 +66,94 @@
     border-radius: 50%;
     font-size: 1.2rem;
     line-height: 1;
+}
+
+.experience-actions {
+    align-items: flex-end;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    margin: 2rem 0 2.5rem;
+}
+
+.experience-search {
+    display: flex;
+    flex: 1;
+    gap: 0.65rem;
+    margin: 0;
+    max-width: 34rem;
+}
+
+.experience-add-button,
+.experience-search .button,
+.button-danger {
+    align-items: center;
+    border: 1px solid var(--accent-dark);
+    border-radius: var(--radius);
+    color: var(--accent-dark);
+    display: inline-flex;
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    justify-content: center;
+    letter-spacing: 0.04em;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.9rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.experience-add-button {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--paper);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.experience-search .button {
+    background: var(--accent-soft);
+    cursor: pointer;
+}
+
+.experience-add-button:hover,
+.experience-add-button:focus-visible,
+.experience-search .button:hover,
+.experience-search .button:focus-visible,
+.button-danger:hover,
+.button-danger:focus-visible {
+    background: var(--accent-dark);
+    color: var(--paper);
+    outline: 0;
+    transform: translateY(-1px);
+}
+
+.experience-search__input {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font: inherit;
+    min-width: 0;
+    padding: 0.7rem 0.8rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.experience-search__input::placeholder {
+    color: var(--text-muted);
+}
+
+.experience-search__input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 128, 104, 0.14);
+    outline: 0;
+}
+
+.button-danger {
+    background: transparent;
+    cursor: pointer;
+    padding: 0.6rem 0.85rem;
 }
 
 .experience-grid {
@@ -267,6 +354,21 @@
 
     .intro-note {
         max-width: 340px;
+    }
+
+    .experience-actions {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .experience-search {
+        max-width: none;
+    }
+
+    .experience-add-button,
+    .experience-search .button {
+        width: 100%;
     }
 
     .experience-grid {

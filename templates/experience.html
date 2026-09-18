@@ -13,25 +13,24 @@
                     <h1>Things I have<br><em>worked on.</em></h1>
                 </div>
             </div>
-            <div class="experience-header">
-                    <a href="{% url 'main:create_experience' %}"
-                       class="button experience-add-button">
-                        <span aria-hidden="true">+</span>
-                        Tambah experience
-                    </a>
+            <div class="experience-actions">
+                <form method="get"
+                        action="{% url 'main:show_experience' %}"
+                        class="experience-search">
+                    <input type="search"
+                            name="title"
+                            value="{{ title_query }}"
+                            placeholder="Cari berdasarkan nama Experience"
+                            class="experience-search__input"
+                            aria-label="Cari berdasarkan nama experience">
+                    <button type="submit" class="button">Cari</button>
+                </form>
+                <a href="{% url 'main:create_experience' %}"
+                   class="button experience-add-button">
+                    <span aria-hidden="true">+</span>
+                    Tambah experience
+                </a>
             </div>
-
-            <form method="get"
-                    action="{% url 'main:show_experience' %}"
-                    class="experience-search">
-                <input type="search"
-                        name="title"
-                        value="{{ title_query }}"
-                        placeholder="Cari berdasarkan nama Experience"
-                        class="experience-search__input"
-                        aria-label="Cari berdasarkan nama experience">
-                <button type="submit" class="button">Cari</button>
-            </form>
 
             <div class="experience-grid">
                 {% for experience in experience_list %}
