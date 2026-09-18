@@ -1,5 +1,9 @@
+import re
 import uuid
+from urllib.parse import parse_qs, urlparse
+
 from django.db import models
+from django.utils import timezone
 
 class Experience(models.Model):
     EXPERIENCE_CHOICES = [
@@ -20,10 +24,29 @@ class Experience(models.Model):
     ended_at = models.DateTimeField(blank=True, null=True)
     def __str__(self):
         return self.title
-    
+
     @property
     def is_ongoing(self):
-        return self.ended_at is None
+        return self.ended_at is None or self.ended_at > timezone.now()
+
+    @property
+    def thumbnail_url(self):
+        if not self.thumbnail:
+            return ""
+
+        parsed_url = urlparse(self.thumbnail)
+        if parsed_url.netloc not in {"drive.google.com", "www.drive.google.com"}:
+            return self.thumbnail
+
+        file_id = parse_qs(parsed_url.query).get("id", [None])[0]
+        if not file_id:
+            match = re.search(r"/file/d/([^/]+)", parsed_url.path)
+            file_id = match.group(1) if match else None
+
+        if not file_id:
+            return self.thumbnail
+
+        return f"https://drive.google.com/thumbnail?id={file_id}&sz=w1000"
 
 
 class Achievement(models.Model):
