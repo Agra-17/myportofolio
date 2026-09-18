@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
     {% block extra_css %}
-    <link rel="stylesheet" href="/static/css/achievements.css">
+    <link rel="stylesheet" href="{% static 'css/achievements.css' %}">
     {% endblock extra_css %}
     
     {% block content %}

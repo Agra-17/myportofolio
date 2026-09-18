@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_css %}
-    <link rel="stylesheet" href="/static/css/styleformAchievements.css">
+    <link rel="stylesheet" href="{% static 'css/styleformAchievements.css' %}">
     <title>Add Achievement - {{ name }}</title>
 {% endblock extra_css %}
 {% block content %}
