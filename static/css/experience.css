@@ -337,6 +337,108 @@
     background: var(--line);
 }
 
+.experience-delete-modal {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    display: none;
+    inset: 0;
+    justify-content: center;
+    margin: 0;
+    max-height: none;
+    max-width: none;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    z-index: 70;
+}
+
+.experience-delete-modal:popover-open {
+    display: flex;
+}
+
+.experience-delete-modal__backdrop {
+    background: rgba(25, 51, 42, 0.58);
+    border: 0;
+    cursor: default;
+    inset: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.experience-delete-modal__content {
+    background: var(--paper-soft, #fbf8f1);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 1.5rem 4rem rgba(25, 51, 42, 0.25);
+    max-width: 30rem;
+    padding: 2rem;
+    position: relative;
+    width: min(100%, 30rem);
+    z-index: 1;
+}
+
+.experience-delete-modal__eyebrow {
+    color: var(--accent-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.7rem;
+    text-transform: uppercase;
+}
+
+.experience-delete-modal__content h2 {
+    color: var(--ink);
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-size: 1.7rem;
+    line-height: 1.1;
+    margin: 0 2rem 0.8rem 0;
+}
+
+.experience-delete-modal__content > p:not(.experience-delete-modal__eyebrow) {
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.experience-delete-modal__title {
+    color: var(--ink);
+    display: block;
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-size: 1.1rem;
+    margin-top: 0.55rem;
+}
+
+.experience-delete-modal__close {
+    background: transparent;
+    border: 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.8rem;
+    line-height: 1;
+    padding: 0.2rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.experience-delete-modal__actions {
+    display: flex;
+    gap: 0.7rem;
+    justify-content: flex-end;
+    margin-top: 1.75rem;
+}
+
+.experience-delete-modal__actions .button-secondary {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    cursor: pointer;
+    font: inherit;
+    padding: 0.6rem 0.85rem;
+}
+
 @media (max-width: 700px) {
     .experience-section {
         padding-top: 3.5rem;
@@ -399,6 +501,19 @@
 
     .experience-card {
         min-height: 330px;
+    }
+
+    .experience-delete-modal__content {
+        padding: 1.5rem;
+    }
+
+    .experience-delete-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .experience-delete-modal__actions .button,
+    .experience-delete-modal__actions form {
+        width: 100%;
     }
 }
 

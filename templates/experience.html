@@ -39,8 +39,8 @@
                             <span class="experience-number">0{{ forloop.counter }}</span>
                             <span class="experience-category">{{ experience.get_category_display }}</span>
                         </div>
-                        {% if experience.thumbnail %}
-                            <img class="experience-thumbnail" src="{{ experience.thumbnail }}" alt="{{ experience.title }}">
+                        {% if experience.thumbnail_url %}
+                            <img class="experience-thumbnail" src="{{ experience.thumbnail_url }}" alt="{{ experience.title }}">
                         {% else %}
                             <div class="experience-thumbnail thumbnail-placeholder" aria-hidden="true">+</div>
                         {% endif %}

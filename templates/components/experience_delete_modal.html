@@ -1,4 +1,4 @@
-<p class="experience-status">
+<div class="experience-delete-trigger">
     <button type="button"
             class="button button-danger"
             popovertarget="delete-experience-{{ experience.id }}"
@@ -6,7 +6,7 @@
             title="Hapus Experience">
         Hapus Experience
     </button>
-</p>
+</div>
 <div id="delete-experience-{{ experience.id }}"
      class="experience-delete-modal"
      popover="auto"
@@ -24,11 +24,10 @@
                 popovertarget="delete-experience-{{ experience.id }}"
                 popovertargetaction="hide"
                 aria-label="Tutup konfirmasi hapus">×</button>
+        <p class="experience-delete-modal__eyebrow">Konfirmasi tindakan</p>
         <h2 id="delete-experience-title-{{ experience.id }}">Hapus Experience?</h2>
-        <p>
-            Apakah Anda yakin ingin menghapus
-            <strong>{{ experience.title }}</strong>?
-        </p>
+        <p>Data yang dihapus tidak dapat dikembalikan. Pastikan Anda memang ingin menghapus:</p>
+        <strong class="experience-delete-modal__title">{{ experience.title }}</strong>
         <div class="experience-delete-modal__actions">
             <button type="button"
                     class="button button-secondary"

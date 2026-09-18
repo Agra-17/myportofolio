@@ -30,7 +30,7 @@
         <div class="site-notifications" aria-live="polite">
             {% for message in messages %}
                 <div class="site-notification site-notification--{{ message.tags|default:'info' }}" role="status">
-                    <span>{{ message }}</span>
+                    <span class="site-notification__message">{{ message }}</span>
                     <button type="button" class="site-notification__close" aria-label="Tutup notifikasi">&times;</button>
                 </div>
             {% endfor %}
