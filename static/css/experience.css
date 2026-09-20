@@ -129,7 +129,7 @@
     transform: translateY(-1px);
 }
 
-.experience-search__input {
+.experience-search_input {
     background: rgba(255, 255, 255, 0.72);
     border: 1px solid var(--line);
     border-radius: var(--radius);
@@ -140,11 +140,11 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.experience-search__input::placeholder {
+.experience-search_input::placeholder {
     color: var(--text-muted);
 }
 
-.experience-search__input:focus {
+.experience-search_input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(79, 128, 104, 0.14);
     outline: 0;

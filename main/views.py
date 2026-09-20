@@ -18,9 +18,18 @@ def show_main(request):
     return render(request, "index.html", context)
 
 def show_experience(request):
+    json_response = get_experience_json(request)
+    experience = serializers.deserialize(
+        "json",
+        json_response.content.decode("utf-8"),
+    )
+    experience = [project.object for project in experience]
+    title_query = request.GET.get("title", "").strip()
+
     context = {
         "name": "Agra",
-        "experience_list": Experience.objects.all(),
+        "experience_list": experience,
+        "title_query": title_query,
     }
     return render(request, "experience.html", context)
 
