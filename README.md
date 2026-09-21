@@ -73,14 +73,31 @@ Untuk secara detailnya. Pada awalnya browser meminta ke aplikasi Django, permint
 3. Perbedaan antara fungsi makemigrations dan migrate :  
 pada makemigration Django melihat apakah ada perubahan di models.py, jika ada dia akan membuat file migrarationnya yang berisi perintah/instruksi untuk perubahan database. seperti pada contoh proyek ini adalah file 0002_achievement.py. Sedangkan migrate tugasnya untuk menjalankan perubahan yang telah dibuat oleh makemigration tadi ke database sebenarnya. Untuk simplenya makemigration adalah pembuat rancangan perintahnya dan migrate untuk mengeksekusinya ke database.
 
+### Assignment 3  
+1. Alasan mengapa menggunakan ModelForm karena dari Django sendiri sudah bisa membuat form berdasarkan model yang telah kita buat (kita memanfaatkan tools ini). Dengan adanya tools ini kita tidak perlu untuk membuat laman page html secara manual. ModelForm juga membantu dalam hal menyimpan data dan juga validasi data. Ketika perumusan di forms.py kita bisa mendefinisikan terlebih dahulu data apa yang ingin kita masukkan, sehingga nantinya dapat dengan mudah melakukan validasi data input yang diberikan user. Dengan kemudahan yang diberikan itulah ModelForm dapat membantu kita dalam maintain sebuah data inputan (berupa form) yang membuat web menjadi lebih dinamis.  
+
+Untuk penggunaan {% csrf_token %} bersifat wajib dari Django. Selain itu, {% csrf_token %} berguna untuk keamanan sistem yang telah dibuat (terutama ketika adanya pembbuatan form). Token ini berfungsi melindungi form dari serangan CSRF (terjadi ketika pihak lain ingin mencoba mengirimkan request ke web kita menggunakan akun yang tak dikenal atau tanpa izin). Token yang dikirim akan dicek terlebih dahulu oleh Django apakah berhak untuk melakun perubahan/akses di web itu (biasanya pada method POST).  
+
+2. Alasan utama mengapa JSON lebih disukai dari pada xml karena ukurannya yang lebih ringkas, parser yang sangat cepat, dan integrasi yang sangat natural dengan JavaScript di sisi frontend. Formating dan juga struktur yang lebih sederhana inilah yang membuat JSON lebih sering digunakan (Walaupun keduanya memiliki fungsi yang sama yaitu dapat menyimpan data). Untuk komunikasi dan juga maintain code antara frontend dan backend juga jadi lebih mudah dikarenakan struktur yang lebih sederhana dan mudah di proses juga.  
+
+3. Secara gari besar alur yang di jalankan oleh view hingga mengembalikan data JSON adalah Browser → urls.py → view.py → model(modelform/model) → Database → Serialization(Formating data) → JSON Response → Browser.  
+untuk penjelasan alurnya sebagai berikut:  
+pengguna mengakses url untuk melihat data dari website portofolio dalam bentuk JSON, request ini akan dikirimkan dari browser dan diterima oleh urls.py. urls.py kemudian mengarahkan ke fungsi view yang sesuai. Selanjutnya view.py akan mengambil data dari database yang sudah di sediakan oleh model Django. Data yang diperoleh dalam proses ini masih berupa objek (QuerySet) Django, sehingga belum dapat dikirim dalam bentuk JSON. Maka dari itu, proses Serialization diperlukan, proses ini mengubah data dan objek yang "bersifat" Django menjadi format yang dapat direpresentasikan dalam bentuk JSON. Setelah itu data dikembalikan melalui JSON Response sehingga data yang bersifat JSON sudah dapat diterima kembali di web browser tersebut.  
+
+Untuk alasan mengapa harus dilakukan serialization adalah kita tidak bisa mengirimkan data yang berupa objek Django secara langsung sebagai JSON. Maka dari itu peran dari serialization ini berfungsi sebagai jembatan bagi objek Django agar dapat dikirimkan oleh internet dengan cara melakukan formating kembali dengan format JSON(bisa dikirim dengan JSON)  
+
+
 ### AI Disclosure
-Saya menggunakan bantuan AI dalam pembuatan projek ini. Penggunaan AI disini saya peruntukkan untuk memperjelas apa yang harus saya lakukan secara step by step. Untuk perihal desain saya juga meminta untuk AI saya memberikan saran agar desainnya menarik. Selain itu saya juga terkadang meminta penjelasan ketika ada hal yang misalnya saya tidak pahami, tetapi saya lebih sering mencari tahunya lewat laman pencarian (web dll) ataupun source youtube. Untuk pembuatan tests.py juga saya meminta bantuan AI agar fungsi yang telah saya bikin sebelumnya dapat berjalan sesuai dengan yang diinginkan.
+Saya menggunakan AI pada projek ini. Beberapa bagian yang saya menggunakan AI adalah. Pembuatan UI dan juga sturkturisasi file css dan juga htmlnya (saya menggunakannya dengan bantuan github copilot). Saya juga mencarinya secara mendalam W3school agar memahami syntaxnya. Saya juga menggunakan AI untuk membantu saya untuk strukturisasi commit (seperti pembuatan branch dan juga commit disiplinnya). Saya juga menggunakan AI ketika adanya bug ketika ingin menambahkan foto yang berupa file. Selebihnya saya juga menggunakan AI untuk deepsearch sebagai kebutuhan saya untuk mendalami materinya.
 
 AI assistance reference: https://claude.ai/share/69799269-6579-4abc-9eca-c6491097d70b 
 AI Tools : github copilot chat  
 Reference Deep Search : W3school, Youtube, dan petani kode  
 -https://www.freecodecamp.org/news/how-django-mvt-architecture-works/ 
 -https://www.w3schools.com/html/default.asp   
--https://www.w3schools.com/css/default.asp  
--https://www.youtube.com/watch?v=FZVLz5_RNho   
+-https://www.w3schools.com/css/default.asp
+-https://www.w3schools.com/django/  
+
+### Progress Mingguan 
+Pada satu minggu ini progress saya terhadap web ini adalah membuat form pada bagian achievement dan juga experience. Saya juga mempelajari bagaimana user bisa melakuakn input data dan bisa langsung ditampilkan di websitenya. Pada minggu ini juga saya mendalami alur dari penggunaan data delivery berbasis JSON. Untuk perubahan yang terjadi di website tentunya ada luamyan banyak. Adanya fitur tambah experience dan juga achievement, ada fitur untuk menghapus experience dan achievement, ada juga bagian untuk mencari achievement dan experience berdasarkan nama judulnya. Beberapa tambahan UI juga dilakukan seperti notifikasi ketika melakukan delete experience atau achievement dan juga UI mengenai pengisian form (ketika menekan tombol tambah experience atau achievement).
 
