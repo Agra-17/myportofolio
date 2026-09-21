@@ -281,6 +281,38 @@
     font-size: 0.76rem;
     font-weight: 700;
     letter-spacing: 0.02em;
+    flex-wrap: wrap;
+}
+
+.experience-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-left: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.experience-card-actions .button,
+.experience-card-actions .button-secondary,
+.experience-card-actions .button-danger {
+    min-height: 2.3rem;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+}
+
+.experience-card-actions .button-secondary {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+}
+
+.experience-card-actions .button-secondary:hover,
+.experience-card-actions .button-secondary:focus-visible {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-dark);
 }
 
 .experience-status {
