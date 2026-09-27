@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.decorators import login_required  # Tambahkan baris ini
+from django.core.exceptions import PermissionDenied        # Tambahkan baris ini
 import datetime
 
 
@@ -55,7 +57,11 @@ def achievement_list(request):
     }
     return render(request, "achievements.html", context)
 
+@login_required(login_url="/login/")
 def create_achievement(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    
     form = AchievementForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -79,7 +85,11 @@ def get_achievements_json(request):
     achievements_json = serializers.serialize("json", achievements)
     return HttpResponse(achievements_json, content_type="application/json")
 
+@login_required(login_url="/login/")
 def delete_achievement(request, achievement_id):
+    if not request.user.is_superuser:
+            raise PermissionDenied
+        
     achievement = get_object_or_404(Achievement, pk=achievement_id)
 
     if request.method == "POST":
