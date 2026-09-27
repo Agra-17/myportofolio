@@ -10,6 +10,7 @@ import datetime
 
 
 def show_main(request):
+    last_login = request.COOKIES.get('last_login', 'Belum ada sesi login / Cookie tidak ditemukan')
     context = {
         "name": "Agra",
         "npm": "2506624833",
@@ -17,6 +18,7 @@ def show_main(request):
         "bio": (
             "Computer Science student passionate about Data Science, Machine Learning, and AI. I enjoy solving problems, exploring data, and building technology-driven solutions."
         ),
+        "last_login" : last_login,
     }
     return render(request, "index.html", context)
 
@@ -165,7 +167,7 @@ def login_user(request):
         return response
 
     context = {
-        "name": "Burhan",
+        "name": "Agra",
         "form": form,
     }
     return render(request, "login.html", context)
