@@ -54,6 +54,7 @@
                                     <p>{{ achievement.description }}</p>
                                     <p class="achievement-issuer"><span>Issued by</span>{{ achievement.issuer }}</p>
                                 </div>
+                                {% include "components/achievement_star.html" with achievement=achievement %}
                                 {% if user.is_superuser %}
                                     {% include 'components/achievement_delete_modal.html' with achievement=achievement %}
                                 {% endif %}

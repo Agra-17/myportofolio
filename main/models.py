@@ -4,6 +4,7 @@ from urllib.parse import parse_qs, urlparse
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Experience(models.Model):
     EXPERIENCE_CHOICES = [
@@ -63,6 +64,10 @@ class Achievement(models.Model):
     scale = models.CharField(max_length=20, choices=ACHIEVEMENT_SCALE, default='national')
     date_achieved = models.DateField()
     issuer = models.CharField(max_length=255)
+
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_achievements", blank=True
+    )
 
     def __str__(self):
         return self.title

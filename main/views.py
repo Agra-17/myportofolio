@@ -82,7 +82,7 @@ def get_achievements_json(request):
     if title_query:
         achievements = achievements.filter(title__icontains=title_query)
 
-    achievements_json = serializers.serialize("json", achievements)
+    achievements_json = serializers.serialize("json", achievements, use_natural_foreign_keys=True)
     return HttpResponse(achievements_json, content_type="application/json")
 
 @login_required(login_url="/login/")
@@ -186,4 +186,18 @@ def logout_user(request):
     logout(request)
     response = redirect("main:show_main")
     response.delete_cookie('last_login')
-    return redirect(response)
+    return response
+
+@login_required(login_url="/login/")
+def toggle_star(request, achievement_id):
+    achievement = get_object_or_404(Achievement, pk=achievement_id)
+
+    if request.method == "POST":
+        # Kalau akun ini sudah pernah memberi star, batalkan star-nya.
+        # Kalau belum, tambahkan star.
+        if request.user in achievement.starred_by.all():
+            achievement.starred_by.remove(request.user)
+        else:
+            achievement.starred_by.add(request.user)
+
+    return redirect("main:show_achievements")
