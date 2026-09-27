@@ -1,0 +1,79 @@
+.project-form {
+    max-width: 36rem;
+    margin: 1.5rem 0;
+}
+
+.project-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.project-form label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 700;
+}
+
+.project-form input {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font: inherit;
+}
+
+.project-form input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.project-form input[aria-invalid="true"] {
+    border-color: #b42318;
+}
+
+.form-help {
+    margin-top: 0.35rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.form-help ul {
+    padding-left: 1.25rem;
+}
+
+.form-error {
+    margin-top: 0.35rem;
+    color: #b42318;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.form-alert {
+    max-width: 36rem;
+    margin-top: 1.25rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #b42318;
+    border-left-width: 0.35rem;
+    border-radius: var(--radius);
+    background: #fff1f0;
+    color: #912018;
+}
+
+.form-alert p {
+    font-weight: 700;
+}
+
+.form-alert ul {
+    margin-top: 0.35rem;
+    padding-left: 1.25rem;
+}
+
+.project-form .button {
+    padding: 0.65rem 1rem;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
