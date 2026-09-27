@@ -30,7 +30,9 @@
                             <button type="submit" class="achievement-control-button">Cari</button>
                         </div>
                     </form>
-                    <a href="{% url 'main:create_achievements' %}" class="achievement-add-link">+ Tambah Achievement</a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'main:create_achievements' %}" class="achievement-add-link">+ Tambah Achievement</a>
+                    {% endif %}
                 </div>
 
                 <div class="achievement-list-heading">
@@ -52,7 +54,9 @@
                                     <p>{{ achievement.description }}</p>
                                     <p class="achievement-issuer"><span>Issued by</span>{{ achievement.issuer }}</p>
                                 </div>
-                                {% include 'components/achievement_delete_modal.html' with achievement=achievement %}
+                                {% if user.is_superuser %}
+                                    {% include 'components/achievement_delete_modal.html' with achievement=achievement %}
+                                {% endif %}
                             </article>
                         {% endfor %}
                     </div>
