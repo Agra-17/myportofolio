@@ -88,16 +88,19 @@ Untuk alasan mengapa harus dilakukan serialization adalah kita tidak bisa mengir
 
 
 ### AI Disclosure
-Saya menggunakan AI pada projek ini. Beberapa bagian yang saya menggunakan AI adalah. Pembuatan UI dan juga sturkturisasi file css dan juga htmlnya (saya menggunakannya dengan bantuan github copilot). Saya juga mencarinya secara mendalam W3school agar memahami syntaxnya. Saya juga menggunakan AI untuk membantu saya untuk strukturisasi commit (seperti pembuatan branch dan juga commit disiplinnya). Saya juga menggunakan AI ketika adanya bug ketika ingin menambahkan foto yang berupa file. Selebihnya saya juga menggunakan AI untuk deepsearch sebagai kebutuhan saya untuk mendalami materinya.
+Saya menggunakan AI/LLM dalam pengerjaan tugas ini. Penggunaan AI dalam tugas ini terdiri dari; pemahaman context tugas, menentukan alur pengerjaan tugas, membantu untuk melakukan debugging ketika terjadi eror (saya melakukannya dengan chatgpt). Tidak hanya lewat AI saja, saya juga mendalami maksud dari outputnya menggunakan W3school, django documentation, dan web PBP (terutama file tutorial). Penggunaan AI ini lebih sering saya gunakan ketika menemukan bug (bug yang terjadi ketika saya melakukan implementasi suatu fungsi atau melakukan perubahan), dengan penggunaan AI itu saya bisa tahu bahwa maksud dari bugnya apa (contohnya ketika saya mendapatkan bug untuk fungsi get_json_experience dan juga penambahan fitur starred_by). Selebihnya AI ini juga saya gunakan untuk melakukan pencarian secara mendalam terkait materi yang di tugaskan. 
 
-AI assistance reference: https://claude.ai/share/69799269-6579-4abc-9eca-c6491097d70b 
-AI Tools : github copilot chat  
+AI assistance reference: https://chatgpt.com/share/6aba8dac-6994-83ec-a8be-17946d011067 
+AI Tools : github copilot chat and codex chat  
 Reference Deep Search : W3school, Youtube, dan petani kode  
 -https://www.freecodecamp.org/news/how-django-mvt-architecture-works/ 
 -https://www.w3schools.com/html/default.asp   
 -https://www.w3schools.com/css/default.asp
--https://www.w3schools.com/django/  
+-https://www.w3schools.com/django/
+-https://docs.djangoproject.com/en/6.1/    
 
 ### Progress Mingguan 
-Pada satu minggu ini progress saya terhadap web ini adalah membuat form pada bagian achievement dan juga experience. Saya juga mempelajari bagaimana user bisa melakuakn input data dan bisa langsung ditampilkan di websitenya. Pada minggu ini juga saya mendalami alur dari penggunaan data delivery berbasis JSON. Untuk perubahan yang terjadi di website tentunya ada luamyan banyak. Adanya fitur tambah experience dan juga achievement, ada fitur untuk menghapus experience dan achievement, ada juga bagian untuk mencari achievement dan experience berdasarkan nama judulnya. Beberapa tambahan UI juga dilakukan seperti notifikasi ketika melakukan delete experience atau achievement dan juga UI mengenai pengisian form (ketika menekan tombol tambah experience atau achievement).
+Pada satu minggu ini progress saya terhadap web ini adalah membuat form pada bagian achievement dan juga experience. Saya juga mempelajari bagaimana user bisa melakuakn input data dan bisa langsung ditampilkan di websitenya. Pada minggu ini juga saya mendalami alur dari penggunaan data delivery berbasis JSON. Untuk perubahan yang terjadi di website tentunya ada luamyan banyak. Adanya fitur tambah experience dan juga achievement, ada fitur untuk menghapus experience dan achievement, ada juga bagian untuk mencari achievement dan experience berdasarkan nama judulnya. Beberapa tambahan UI juga dilakukan seperti notifikasi ketika melakukan delete experience atau achievement dan juga UI mengenai pengisian form (ketika menekan tombol tambah experience atau achievement).  
+
+Pada minggu ke 4 ini progress saya terhadap web ini adalah membuat fitur login, register. Fitur ini nantinya berguna untuk plotting user (superuser,editor_user,regular_user). Saya juga menambahkan fitur baru yaitu fitur star, yang mana fitur ini berfungsi untuk pemberi tanda pada experience/achiievement tertentu yang sekiranya viewer sukai. Pada minggu ini saya juga belajar melakuakn authorization dan juga restriction di beberapa menu agar tidak semua fitur bisa akses oleh user. Dalam progress minggu ini saya juga mengubah get_experience_json saya agar transfer data yang terjadi bersifat lebih aman.
 
