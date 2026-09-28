@@ -25,20 +25,21 @@ def show_main(request):
     return render(request, "index.html", context)
 
 def show_experience(request):
-    json_response = get_experience_json(request)
-    experience = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    experience = [project.object for project in experience]
     title_query = request.GET.get("title", "").strip()
+    experiences = Experience.objects.all()
+
+    if title_query:
+        experiences = experiences.filter(
+            title__icontains=title_query
+        )
 
     context = {
         "name": "Agra",
-        "experience_list": experience,
+        "experience_list": experiences,
         "title_query": title_query,
         "is_editor": is_editor(request.user),
     }
+
     return render(request, "experience.html", context)
 
 def achievement_list(request):
@@ -159,8 +160,16 @@ def get_experience_json(request):
     if title_query:
         experiences = experiences.filter(title__icontains=title_query)
 
-    experiences_json = serializers.serialize("json", experiences)
-    return HttpResponse(experiences_json, content_type="application/json")
+    data = []
+
+    for experience in experiences:
+        data.append({
+            "id": experience.id,
+            "title": experience.title,
+            "description": experience.description,
+            "star_count": experience.starred_by.count(),
+        })
+    return HttpResponse(data, safe = False)
 
 
 def register(request):
