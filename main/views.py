@@ -201,3 +201,8 @@ def toggle_star(request, achievement_id):
             achievement.starred_by.add(request.user)
 
     return redirect("main:show_achievements")
+
+def is_editor(user):
+    return(
+        user.is_authenticated and user.groups.filter(name="Editor").exist
+    )
