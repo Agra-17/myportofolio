@@ -112,8 +112,11 @@ def create_experience(request):
     }
     return render(request,'experience_form.html', context)
 
-
+@login_required(login_url="/login/")
 def update_experience(request, experience_id):
+    if not (request.user.is_superuser and is_editor(request.user)):
+            raise PermissionDenied
+    
     experience = get_object_or_404(Experience, pk=experience_id)
     form = ExperienceForm(request.POST or None, instance=experience)
 
