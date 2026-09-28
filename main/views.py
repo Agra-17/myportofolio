@@ -37,6 +37,7 @@ def show_experience(request):
         "name": "Agra",
         "experience_list": experience,
         "title_query": title_query,
+        "is_editor": is_editor(request.user),
     }
     return render(request, "experience.html", context)
 
@@ -99,7 +100,11 @@ def delete_achievement(request, achievement_id):
 
     return redirect("main:show_achievements")
 
+@login_required(login_url="/login/")
 def create_experience(request):
+    if not request.user.is_superuser:
+            raise PermissionDenied
+
     form = ExperienceForm(request.POST or None)
     if form.is_valid() and request.method == 'POST':
         form.save()
@@ -114,8 +119,8 @@ def create_experience(request):
 
 @login_required(login_url="/login/")
 def update_experience(request, experience_id):
-    if not (request.user.is_superuser and is_editor(request.user)):
-            raise PermissionDenied
+    if not (request.user.is_superuser or is_editor(request.user)):
+        raise PermissionDenied
     
     experience = get_object_or_404(Experience, pk=experience_id)
     form = ExperienceForm(request.POST or None, instance=experience)
@@ -133,6 +138,19 @@ def update_experience(request, experience_id):
     }
     return render(request, 'experience_form.html', context)
 
+@login_required(login_url="/login/")
+def delete_experience(request, experience_id):
+    if not request.user.is_superuser:
+            raise PermissionDenied
+
+    experience = get_object_or_404(Experience, pk=experience_id)
+
+    if request.method == "POST":
+        experience.delete()
+        messages.success(request, "Experience berhasil dihapus!")
+        return redirect("main:show_experience")
+
+    return redirect("main:show_experience")
 
 def get_experience_json(request):
     title_query = request.GET.get("title", "").strip()
@@ -144,15 +162,6 @@ def get_experience_json(request):
     experiences_json = serializers.serialize("json", experiences)
     return HttpResponse(experiences_json, content_type="application/json")
 
-def delete_experience(request, experience_id):
-    experience = get_object_or_404(Experience, pk=experience_id)
-
-    if request.method == "POST":
-        experience.delete()
-        messages.success(request, "Experience berhasil dihapus!")
-        return redirect("main:show_experience")
-
-    return redirect("main:show_experience")
 
 def register(request):
     form = UserCreationForm(request.POST or None)
@@ -206,6 +215,4 @@ def toggle_star(request, achievement_id):
     return redirect("main:show_achievements")
 
 def is_editor(user):
-    return(
-        user.is_authenticated and user.groups.filter(name="Editor").exist
-    )
+    return user.is_authenticated and user.groups.filter(name="Editor").exists()
