@@ -2,7 +2,7 @@ from main.forms import AchievementForm, ExperienceForm
 from main.models import Achievement, Experience
 from django.contrib import messages
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -26,16 +26,9 @@ def show_main(request):
 
 def show_experience(request):
     title_query = request.GET.get("title", "").strip()
-    experiences = Experience.objects.all()
-
-    if title_query:
-        experiences = experiences.filter(
-            title__icontains=title_query
-        )
 
     context = {
         "name": "Agra",
-        "experience_list": experiences,
         "title_query": title_query,
         "is_editor": is_editor(request.user),
     }
@@ -155,7 +148,7 @@ def delete_experience(request, experience_id):
 
 def get_experience_json(request):
     title_query = request.GET.get("title", "").strip()
-    experiences = Experience.objects.all()
+    experiences = Experience.objects.prefetch_related('starred_by').all()
 
     if title_query:
         experiences = experiences.filter(title__icontains=title_query)
@@ -163,13 +156,26 @@ def get_experience_json(request):
     data = []
 
     for experience in experiences:
+        starred_users = list(experience.starred_by.all())
+        is_starred = request.user in starred_users if request.user.is_authenticated else False
+        starred_by_names = ", ".join(user.username for user in starred_users)
+
         data.append({
-            "id": experience.id,
-            "title": experience.title,
-            "description": experience.description,
-            "star_count": experience.starred_by.count(),
+            "pk": str(experience.id),
+            "fields": {
+                "title": experience.title,
+                "description": experience.description,
+                "category": experience.get_category_display(),
+                "thumbnail_url": experience.thumbnail_url,
+                "started_at": experience.started_at.strftime("%b %Y") if experience.started_at else "",
+                "ended_at": experience.ended_at.strftime("%b %Y") if experience.ended_at else "",
+                "is_ongoing": experience.is_ongoing,
+                "star_count": len(starred_users),
+                "is_starred": is_starred,
+                "starred_by_names": starred_by_names,
+            }
         })
-    return HttpResponse(data, safe = False)
+    return JsonResponse(data, safe=False)
 
 
 def register(request):
