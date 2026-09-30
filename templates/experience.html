@@ -54,6 +54,9 @@
     const searchForm = document.getElementById('experience-search-form');
     const searchInput = document.getElementById('search-input');
     const experienceCount = document.getElementById('experience-count');
+
+    const SEARCH_DEBOUNCE_DELAY = 300;
+    let searchDebounceTimer;
     let experiencesAbortController;
 
     function escapeHtml(value) {
@@ -174,9 +177,22 @@
         }
     }
 
-    searchForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+    function searchExperience(){
         fetchExperiences(searchInput.value.trim());
+    }
+
+    searchInput.addEventListener("input", function() {
+    clearTimeout(searchDebounceTimer);
+
+        searchDebounceTimer = setTimeout(function() {
+            searchExperience();
+        }, SEARCH_DEBOUNCE_DELAY);
+    });
+
+    searchForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        clearTimeout(searchDebounceTimer);
+        searchExperience();
     });
 
     fetchExperiences(searchInput.value.trim());
