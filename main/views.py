@@ -31,6 +31,7 @@ def show_experience(request):
         "name": "Agra",
         "title_query": title_query,
         "is_editor": is_editor(request.user),
+        "form": ExperienceForm(),
     }
 
     return render(request, "experience.html", context)

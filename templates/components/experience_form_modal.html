@@ -1,0 +1,90 @@
+<div id="add-experience-modal"
+     class="experience-form-modal"
+     popover="auto"
+     role="dialog"
+     aria-labelledby="add-experience-modal-title"
+     aria-describedby="add-experience-modal-description">
+    <button type="button"
+            class="experience-form-modal__backdrop"
+            popovertarget="add-experience-modal"
+            popovertargetaction="hide"
+            tabindex="-1"
+            aria-label="Tutup form tambah experience"></button>
+
+    <div class="experience-form-modal__content">
+        <div class="experience-form-modal__header">
+            <div>
+                <p class="experience-form-modal__eyebrow">Portofolio / Experience</p>
+                <h2 id="add-experience-modal-title">Tambah experience</h2>
+                <p id="add-experience-modal-description" class="experience-form-modal__description">
+                    Isi detail pengalaman. Kolom bertanda * wajib diisi.
+                </p>
+            </div>
+            <button type="button"
+                    class="experience-form-modal__close"
+                    popovertarget="add-experience-modal"
+                    popovertargetaction="hide"
+                    aria-label="Tutup form tambah experience">&times;</button>
+        </div>
+
+        <form id="experience-form"
+              method="post"
+              action="{% url 'main:create_experience' %}"
+              class="experience-form-modal__form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="experience-form-modal__form-errors" role="alert">
+                    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="experience-form-modal__fields">
+                {% for field in form %}
+                    <div class="experience-form-modal__field experience-form-modal__field--{{ field.name }}{% if field.errors %} experience-form-modal__field--has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">
+                            <span>
+                                {% if field.name == 'category' %}Kategori
+                                {% elif field.name == 'ended_at' %}Tanggal Selesai
+                                {% else %}{{ field.label }}{% endif %}
+                                {% if field.field.required %}<span class="experience-form-modal__required" aria-hidden="true"> *</span>{% endif %}
+                            </span>
+                            {% if not field.field.required %}<span class="experience-form-modal__optional">Opsional</span>{% endif %}
+                        </label>
+                        {% if field.name == 'thumbnail' %}
+                            <input type="url"
+                                   name="{{ field.html_name }}"
+                                   id="{{ field.id_for_label }}"
+                                   value="{{ field.value|default_if_none:'' }}"
+                                   maxlength="{{ field.field.max_length }}"
+                                   aria-describedby="{{ field.auto_id }}_helptext"
+                                   {% if field.errors %}aria-invalid="true"{% endif %}
+                                   placeholder="https://contoh.com/gambar.jpg">
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="experience-form-modal__help" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>
+                        {% elif field.name == 'thumbnail' %}
+                            <p class="experience-form-modal__help" id="{{ field.auto_id }}_helptext">Gunakan URL gambar yang dapat diakses publik.</p>
+                        {% elif field.name == 'started_at' %}
+                            <p class="experience-form-modal__help">Tanggal pengalaman dimulai.</p>
+                        {% elif field.name == 'ended_at' %}
+                            <p class="experience-form-modal__help">Biarkan kosong jika masih berlangsung.</p>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p class="experience-form-modal__error" role="alert">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="experience-form-modal__actions">
+                <button type="button"
+                        class="button button-secondary"
+                        popovertarget="add-experience-modal"
+                        popovertargetaction="hide">Batal</button>
+                <button type="submit" class="button">Simpan experience</button>
+            </div>
+        </form>
+    </div>
+</div>

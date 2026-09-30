@@ -1,0 +1,251 @@
+.experience-form-modal {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    display: none;
+    inset: 0;
+    justify-content: center;
+    margin: 0;
+    max-height: none;
+    max-width: none;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+}
+
+.experience-form-modal:popover-open {
+    display: flex;
+}
+
+.experience-form-modal__backdrop {
+    background: rgba(25, 51, 42, 0.62);
+    border: 0;
+    cursor: default;
+    inset: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.experience-form-modal__content {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 1.5rem 4rem rgba(25, 51, 42, 0.28);
+    color: var(--ink);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.75rem;
+    position: relative;
+    width: min(100%, 680px);
+    z-index: 1;
+}
+
+.experience-form-modal__header {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.experience-form-modal__eyebrow {
+    color: var(--accent-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+}
+
+.experience-form-modal__header h2 {
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.2;
+}
+
+.experience-form-modal__description,
+.experience-form-modal__help {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.experience-form-modal__description {
+    margin-top: 0.4rem;
+}
+
+.experience-form-modal__close {
+    background: transparent;
+    border: 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-size: 1.8rem;
+    line-height: 1;
+    padding: 0.15rem 0.35rem;
+}
+
+.experience-form-modal__close:hover,
+.experience-form-modal__close:focus-visible {
+    color: var(--ink);
+}
+
+.experience-form-modal__fields {
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.experience-form-modal__field {
+    min-width: 0;
+}
+
+.experience-form-modal__field--title,
+.experience-form-modal__field--description,
+.experience-form-modal__field--category,
+.experience-form-modal__field--thumbnail {
+    grid-column: 1 / -1;
+}
+
+.experience-form-modal__field label {
+    align-items: baseline;
+    display: flex;
+    font-size: 0.84rem;
+    font-weight: 700;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+}
+
+.experience-form-modal__required {
+    color: #a83f32;
+}
+
+.experience-form-modal__optional {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+}
+
+.experience-form-modal__field input,
+.experience-form-modal__field select,
+.experience-form-modal__field textarea {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--ink);
+    display: block;
+    font: inherit;
+    min-height: 2.75rem;
+    padding: 0.65rem 0.8rem;
+    width: 100%;
+}
+
+.experience-form-modal__field textarea {
+    min-height: 6.5rem;
+    resize: vertical;
+}
+
+.experience-form-modal__field input:focus-visible,
+.experience-form-modal__field select:focus-visible,
+.experience-form-modal__field textarea:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 128, 104, 0.16);
+    outline: 0;
+}
+
+.experience-form-modal__field--has-error input,
+.experience-form-modal__field--has-error select,
+.experience-form-modal__field--has-error textarea {
+    border-color: #a83f32;
+}
+
+.experience-form-modal__help {
+    margin-top: 0.35rem;
+}
+
+.experience-form-modal__error,
+.experience-form-modal__form-errors {
+    color: #a83f32;
+    font-size: 0.82rem;
+}
+
+.experience-form-modal__error {
+    margin-top: 0.35rem;
+}
+
+.experience-form-modal__form-errors {
+    background: #fae9e6;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    padding: 0.7rem 0.85rem;
+}
+
+.experience-form-modal__actions {
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+}
+
+.experience-form-modal__actions .button {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    color: var(--paper);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+}
+
+.experience-form-modal__actions .button:hover,
+.experience-form-modal__actions .button:focus-visible {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+}
+
+.experience-form-modal__actions .button-secondary {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+.experience-form-modal__actions .button-secondary:hover,
+.experience-form-modal__actions .button-secondary:focus-visible {
+    background: var(--accent-soft, #e3eee7);
+    border-color: var(--accent);
+    color: var(--accent-dark);
+}
+
+@media (max-width: 600px) {
+    .experience-form-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .experience-form-modal__content {
+        max-height: 90vh;
+        padding: 1.25rem;
+        border-radius: 10px 10px 0 0;
+        width: 100%;
+    }
+
+    .experience-form-modal__fields {
+        grid-template-columns: 1fr;
+    }
+
+    .experience-form-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .experience-form-modal__actions .button {
+        width: 100%;
+        text-align: center;
+    }
+}
