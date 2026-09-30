@@ -63,17 +63,20 @@
     let searchDebounceTimer;
     let experiencesAbortController;
 
-    function escapeHtml(value) {
-        return String(value).replace(/[&<>"']/g, character => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        })[character]);
-    }
-
     function displayPageSection({ showLoading = false, showError = false, showEmpty = false, showGrid = false }) {
         loadingState.classList.toggle('hide', !showLoading);
         errorState.classList.toggle('hide', !showError);
         emptyState.classList.toggle('hide', !showEmpty);
         gridContainer.classList.toggle('hide', !showGrid);
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
     }
 
     function buildExperienceCardElement(item, index) {
@@ -84,7 +87,7 @@
         articleElement.className = 'experience-card';
 
         const imageHtml = experience.thumbnail_url
-            ? `<img class="experience-thumbnail" src="${escapeHtml(experience.thumbnail_url)}" alt="${escapeHtml(experience.title)}">`
+            ? `<img class="experience-thumbnail" src="${escapeHtml(experience.thumbnail_url)}" alt="Gambar ${escapeHtml(experience.title)}">`
             : '<div class="experience-thumbnail thumbnail-placeholder" aria-hidden="true">+</div>';
 
         const deleteUrl = "{% url 'main:delete_experience' '00000000-0000-0000-0000-000000000000' %}"
@@ -106,18 +109,18 @@
         const isStarredClass = experience.is_starred ? " is-starred" : "";
         const starText = experience.is_starred ? "Unstar" : "Star";
         const starTitle = experience.star_count > 0
-            ? `Dibintangi oleh ${experience.starred_by_names}`
+            ? `Dibintangi oleh ${escapeHtml(experience.starred_by_names)}`
             : "Jadilah yang pertama memberi star";
         const dateRange = [experience.started_at, experience.ended_at].filter(Boolean).join(' - ');
 
         const completeCardHtml = `
             <div class="experience-card-top">
                 <span class="experience-number">${index + 1}</span>
-                <span class="experience-category">${escapeHtml(experience.category)}</span>
             </div>
             ${imageHtml}
             <div class="experience-card-body">
                 <h2>${escapeHtml(experience.title)}</h2>
+                <span class="experience-category">${escapeHtml(experience.category)}</span>
                 <p class="experience-description">${escapeHtml(experience.description)}</p>
                 <div class="experience-card-footer">
                     <span>${escapeHtml(dateRange)}</span>
@@ -128,7 +131,7 @@
                         <form method="post" action="${starUrl}" class="star-form">
                             {% csrf_token %}
                             <button type="submit" class="button button-star${isStarredClass}"
-                                    title="${escapeHtml(starTitle)}">
+                                    title="${starTitle}">
                                 <span aria-hidden="true">★</span>
                                 ${starText}
                                 <span class="star-count">${experience.star_count}</span>
@@ -198,6 +201,68 @@
         clearTimeout(searchDebounceTimer);
         searchExperience();
     });
+
+    const CREATE_EXPERIENCE_ENDPOINT = "{% url 'main:create_experience_ajax' %}";
+    const experienceForm = document.getElementById('experience-form');
+
+    // Membaca nilai cookie, digunakan untuk mengambil token CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function closeExperienceModal() {
+        document.getElementById('add-experience-modal').hidePopover();
+    }
+
+    // Mengirim data form experience ke server
+    async function addExperience(event) {
+        event.preventDefault();
+
+        const submitButton = experienceForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        try {
+            const csrfToken = getCookie('csrftoken') || experienceForm.querySelector('[name="csrfmiddlewaretoken"]').value;
+            const response = await fetch(CREATE_EXPERIENCE_ENDPOINT, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrfToken, 'Accept': 'application/json' },
+                body: new FormData(experienceForm),
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok) {
+                experienceForm.reset();
+                closeExperienceModal();
+                showToast('Berhasil', 'Experience baru berhasil ditambahkan!', 'success');
+                fetchExperiences(searchInput.value.trim());
+            } else {
+                const errorMessages = result.errors
+                    ? Object.values(result.errors).flat().map(error => error.message || String(error))
+                    : [result.message || `Terjadi kesalahan (status ${response.status}).`];
+                showToast('Gagal menambahkan experience', errorMessages.join(' '), 'error');
+            }
+        } catch (error) {
+            console.error('Error adding experience:', error);
+            showToast('Gagal menambahkan experience', 'Tidak dapat terhubung ke server. Silakan coba lagi.', 'error');
+        } finally {
+            submitButton.disabled = false;
+        }
+    }
+
+    if (experienceForm) {
+        experienceForm.addEventListener('submit', addExperience);
+    }
 
     fetchExperiences(searchInput.value.trim());
 </script>
