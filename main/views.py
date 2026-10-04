@@ -79,8 +79,27 @@ def get_achievements_json(request):
     if title_query:
         achievements = achievements.filter(title__icontains=title_query)
 
-    achievements_json = serializers.serialize("json", achievements, use_natural_foreign_keys=True)
-    return HttpResponse(achievements_json, content_type="application/json")
+    data = []
+    for achievement in achievements:
+        starred_users = achievement.starred_by.all
+        is_starred = request.user in starred_users if request.user.is_authenticated else False
+        starred_by_names = ", ".join([u.username for u in starred_users])
+
+    data.append({
+            "pk": str(achievement.id),
+            "fields": {
+                "title": achievement.title,
+                "description": achievement.description,
+                "scale": achievement.scale,
+                "date_achieved": achievement.date_achieved,
+                "issued_by": achievement.issuer,
+                "star_count": starred_users.count(),
+                "is_starred": is_starred,
+                "starred_by_names": starred_by_names,
+            }
+    })
+
+    return JsonResponse(data, safe=False)
 
 @login_required(login_url="/login/")
 def delete_achievement(request, achievement_id):
