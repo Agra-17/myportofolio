@@ -44,6 +44,7 @@ def achievement_list(request):
     context = {
         "name": "Agra",
         "title_query": title_query,
+        "form": AchievementForm(),
     }
     return render(request, "achievements.html", context)
 
