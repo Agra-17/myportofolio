@@ -2,6 +2,7 @@
 {% load static %}
     {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/achievements.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styleformAchievements.css' %}">
     {% endblock extra_css %}
     
     {% block content %}
@@ -32,11 +33,11 @@
                     </form>
                     {% if user.is_superuser %}
                     <button type="button"
-                        class="button achivement-add-button"
-                        popovertarget="add-achivement-modal">
+                        class="button achievement-add-button"
+                        popovertarget="add-achievement-modal">
                     <span aria-hidden="true">+</span>
-                    Tambah Achievement
-                </button>
+                        Tambah Achievement
+                    </button>
                     {% endif %}
                 </div>
 
@@ -61,7 +62,9 @@
             </div>
         </section>
     </main>
-
+{% if user.is_superuser %}
+    {% include "components/achievement_form_modal.html" %}
+{% endif %}
 <script>
     const BASE_ACHIEVEMENTS_ENDPOINT = "{% url 'main:get_achievements_json' %}";
     const IS_SUPERUSER = "{{ user.is_superuser|yesno:'true,false' }}" === "true";
@@ -187,7 +190,9 @@
         clearTimeout(searchDebounceTimer);
         searchAchievements();
     });
-
+    function closeAchievementModal() {
+        document.getElementById("add-achievement-modal").hidePopover();
+    }
     fetchAchievements(searchInput.value.trim());
 </script>
 {% endblock content %}

@@ -1,58 +1,217 @@
-.achievement-form {
+.achievement-form-modal {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    display: none;
+    inset: 0;
+    justify-content: center;
+    margin: 0;
+    max-height: none;
+    max-width: none;
+    padding: 1rem;
+    position: fixed;
     width: 100%;
-    max-width: 100%;
+}
+
+.achievement-form-modal:popover-open {
+    display: flex;
+}
+
+.achievement-form-modal__backdrop {
+    background: rgba(25, 51, 42, 0.64);
+    border: 0;
+    inset: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.achievement-form-modal__content {
+    background: #fbf8f1;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 1.5rem 4rem rgba(25, 51, 42, 0.25);
+    color: var(--ink);
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    padding: 2rem;
+    position: relative;
+    width: min(100%, 680px);
+    z-index: 1;
+}
+
+.achievement-form-modal__content > h2 {
+    border-bottom: 1px solid var(--line);
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-size: clamp(1.65rem, 4vw, 2.25rem);
+    letter-spacing: -0.05em;
+    line-height: 1.15;
+    padding-bottom: 1.35rem;
+    padding-right: 2.75rem;
+}
+
+.achievement-form-modal__close {
+    align-items: center;
+    background: #e9eee8;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--ink);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 1.45rem;
+    height: 2.25rem;
+    justify-content: center;
+    line-height: 1;
+    position: absolute;
+    right: 2rem;
+    top: 1.9rem;
+    width: 2.25rem;
+}
+
+.achievement-form-modal__close:hover,
+.achievement-form-modal__close:focus-visible {
+    background: var(--accent-dark);
+    color: white;
+}
+
+.achievement-form {
+    display: grid;
+    gap: 1.2rem 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 1.5rem;
 }
 
-.form-group {
-    margin-bottom: 1.25rem;
+.achievement-form .form-group {
+    min-width: 0;
 }
 
-.form-group label {
+.achievement-form .form-group:nth-of-type(1),
+.achievement-form .form-group:nth-of-type(2),
+.achievement-form .form-group:nth-of-type(5) {
+    grid-column: 1 / -1;
+}
+
+.achievement-form .form-group label {
+    color: var(--ink);
     display: block;
-    margin-bottom: 0.4rem;
+    font-size: 0.82rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.45rem;
 }
 
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0.7rem;
-    border: 1px solid var(--accent);
-    border-radius: var(--radius);
+.achievement-form .form-group input,
+.achievement-form .form-group select,
+.achievement-form .form-group textarea {
+    appearance: none;
+    background: white;
+    border: 1px solid #c8d5cb;
+    border-radius: 6px;
+    color: var(--ink);
+    display: block;
     font: inherit;
-    transition:
-        border-color 0.2s ease,
-        outline-color 0.2s ease;
+    min-height: 2.9rem;
+    padding: 0.68rem 0.8rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: 2px solid var(--accent);
-    border-color: var(--accent);
+.achievement-form .form-group select {
+    appearance: auto;
 }
 
-.form-error {
+.achievement-form .form-group textarea {
+    min-height: 6.5rem;
+    resize: vertical;
+}
+
+.achievement-form .form-group input::placeholder,
+.achievement-form .form-group textarea::placeholder {
+    color: #87938b;
+}
+
+.achievement-form .form-group input:focus-visible,
+.achievement-form .form-group select:focus-visible,
+.achievement-form .form-group textarea:focus-visible {
+    border-color: var(--accent-dark);
+    box-shadow: 0 0 0 3px rgba(79, 128, 104, 0.16);
+    outline: 0;
+}
+
+.achievement-form .form-error {
     color: #b42318;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     margin-top: 0.35rem;
 }
 
-.button {
-    display: inline-block;
-    height: fit-content;
-    border: 0;
-    border-radius: var(--radius);
-    padding: 0.65rem 1rem;
-    background: var(--accent);
-    color: white;
-    cursor: pointer;
-    font: inherit;
-    font-weight: 700;
-    text-decoration: none;
+.achievement-form-modal__actions {
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 0.7rem;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+    padding-top: 1.2rem;
 }
 
-.button-secondary {
+.achievement-form-modal__actions .button {
+    border: 1px solid var(--accent-dark);
+    border-radius: 5px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 700;
+    min-height: 2.75rem;
+    padding: 0.6rem 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.achievement-form-modal__actions .button[type="submit"] {
+    background: var(--accent-dark);
+    color: white;
+}
+
+.achievement-form-modal__actions .button[type="submit"]:hover,
+.achievement-form-modal__actions .button[type="submit"]:focus-visible {
     background: var(--ink);
+}
+
+.achievement-form-modal__actions .button-secondary {
+    background: transparent;
+    color: var(--accent-dark);
+}
+
+.achievement-form-modal__actions .button-secondary:hover,
+.achievement-form-modal__actions .button-secondary:focus-visible {
+    background: #e3eee7;
+}
+
+@media (max-width: 640px) {
+    .achievement-form-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .achievement-form-modal__content {
+        border-radius: 12px 12px 0 0;
+        max-height: 92dvh;
+        padding: 1.5rem;
+        width: 100%;
+    }
+
+    .achievement-form-modal__close {
+        right: 1.5rem;
+        top: 1.4rem;
+    }
+
+    .achievement-form {
+        grid-template-columns: 1fr;
+    }
+
+    .achievement-form-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .achievement-form-modal__actions .button {
+        width: 100%;
+    }
 }

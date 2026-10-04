@@ -141,7 +141,8 @@
 }
 
 .achievement-control-button,
-.achievement-add-link {
+.achievement-add-link,
+.achievement-add-button {
     align-items: center;
     border: 1px solid var(--accent-dark);
     border-radius: var(--radius);
@@ -167,19 +168,28 @@
 .achievement-control-button:hover,
 .achievement-control-button:focus-visible,
 .achievement-add-link:hover,
-.achievement-add-link:focus-visible {
+.achievement-add-link:focus-visible,
+.achievement-add-button:hover,
+.achievement-add-button:focus-visible {
     background: var(--accent-dark);
     color: var(--paper);
     outline: 0;
     transform: translateY(-1px);
 }
 
-.achievement-add-link {
+.achievement-add-link,
+.achievement-add-button {
     background: var(--accent);
     border-color: var(--accent);
     color: var(--paper);
     flex-shrink: 0;
     white-space: nowrap;
+}
+
+.achievement-add-button {
+    appearance: none;
+    cursor: pointer;
+    gap: 0.4rem;
 }
 
 .achievement-list-heading {
@@ -455,6 +465,7 @@
     }
 
     .achievement-add-link,
+    .achievement-add-button,
     .achievement-control-button {
         width: 100%;
     }
