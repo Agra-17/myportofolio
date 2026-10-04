@@ -87,6 +87,15 @@
         gridContainer.classList.toggle('hide', !showGrid);
     }
 
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
+
     // Membuat elemen card achievement
     function buildAchievementCardElement(item, index) {
         const achievement = item.fields;
@@ -102,7 +111,7 @@
             .replace('00000000-0000-0000-0000-000000000000', achievementId);
 
         const deleteHtml = IS_SUPERUSER
-            ? `<form method="post" action="${deleteUrl}" class="achievement-delete-trigger">
+            ? `<form method="post" action="${escapeHtml(deleteUrl)}" class="achievement-delete-trigger">
                 {% csrf_token %}
                 <button type="submit" class="button button-danger" onclick="return confirm('Yakin ingin menghapus achievement ini?');">Hapus</button>
             </form>`
@@ -111,7 +120,7 @@
         const isStarredClass = achievement.is_starred ? ' is-starred' : '';
         const starText = achievement.is_starred ? 'Unstar' : 'Star';
         const starTitle = achievement.star_count > 0
-            ? `Dibintangi oleh ${achievement.starred_by_names}`
+            ? `Dibintangi oleh ${escapeHtml(achievement.starred_by_names)}`
             : 'Jadilah yang pertama memberi star';
 
         // Komponen card
@@ -119,18 +128,18 @@
             <div class="achievement-index">${String(index + 1).padStart(2, '0')}</div>
             <div class="achievement-item-main">
                 <div class="achievement-item-meta">
-                    <span>${achievement.scale}</span>
-                    <time datetime="${achievement.date_achieved}">${achievement.date_achieved}</time>
+                    <span>${escapeHtml(achievement.scale)}</span>
+                    <time datetime="${escapeHtml(achievement.date_achieved)}">${escapeHtml(achievement.date_achieved)}</time>
                 </div>
-                <h2>${achievement.title}</h2>
-                <p>${achievement.description}</p>
-                <p class="achievement-issuer"><span>Issued by</span>${achievement.issued_by}</p>
-                <form method="post" action="${starUrl}" class="star-form">
+                <h2>${escapeHtml(achievement.title)}</h2>
+                <p>${escapeHtml(achievement.description)}</p>
+                <p class="achievement-issuer"><span>Issued by</span>${escapeHtml(achievement.issued_by)}</p>
+                <form method="post" action="${escapeHtml(starUrl)}" class="star-form">
                     {% csrf_token %}
                     <button type="submit" class="button button-star${isStarredClass}" title="${starTitle}">
                         <span aria-hidden="true">★</span>
                         ${starText}
-                        <span class="star-count">${achievement.star_count}</span>
+                        <span class="star-count">${escapeHtml(achievement.star_count)}</span>
                     </button>
                 </form>
             </div>
