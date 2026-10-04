@@ -38,18 +38,11 @@ def show_experience(request):
     return render(request, "experience.html", context)
 
 def achievement_list(request):
-    json_response = get_achievements_json(request)
-
-    achievements = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    achievements = [project.object for project in achievements]
+    
     title_query = request.GET.get("title", "").strip()
 
     context = {
         "name": "Agra",
-        "achievements": achievements,
         "title_query": title_query,
     }
     return render(request, "achievements.html", context)
