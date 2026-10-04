@@ -39,5 +39,5 @@ urlpatterns = [
     path("achievements/<uuid:achievement_id>/star/", toggle_star,name="toggle_star",),
     path("experience/<uuid:experience_id>/star/", toggle_experience_star,name="toggle_experience_star",),
     path("experience/add-ajax/", create_experience_ajax, name="create_experience_ajax"),
-    path("projects/add-ajax/", create_achievement_ajax, name="create_project_ajax"),
+    path("achievements/add-ajax/", create_achievement_ajax, name="create_achievement_ajax"),
 ]
