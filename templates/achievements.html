@@ -35,6 +35,20 @@
                     {% endif %}
                 </div>
 
+                <div id="loading" class="empty-state hide">
+                    <p>Memuat achievements...</p>
+                </div>
+
+                <div id="error" class="empty-state hide">
+                    <p>Gagal memuat data achievements. Silakan coba lagi.</p>
+                </div>
+
+                <div id="empty" class="empty-state hide">
+                    <p>Belum ada proyek yang ditambahkan atau ditemukan.</p>
+                </div>
+
+                <div id="grid" class="achievement-grid hide"></div>
+
                 <div class="achievement-list-heading">
                     <p>Selected work &amp; recognition</p>
                     <span>01 — {% if achievements %}{{ achievements|length|stringformat:"02d" }}{% else %}00{% endif %}</span>
