@@ -31,7 +31,12 @@
                         </div>
                     </form>
                     {% if user.is_superuser %}
-                        <a href="{% url 'main:create_achievements' %}" class="achievement-add-link">+ Tambah Achievement</a>
+                    <button type="button"
+                        class="button achivement-add-button"
+                        popovertarget="add-achivement-modal">
+                    <span aria-hidden="true">+</span>
+                    Tambah Achievement
+                </button>
                     {% endif %}
                 </div>
 
