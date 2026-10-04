@@ -74,11 +74,11 @@ def get_achievements_json(request):
 
     data = []
     for achievement in achievements:
-        starred_users = achievement.starred_by.all
+        starred_users = list(achievement.starred_by.all())
         is_starred = request.user in starred_users if request.user.is_authenticated else False
         starred_by_names = ", ".join([u.username for u in starred_users])
 
-    data.append({
+        data.append({
             "pk": str(achievement.id),
             "fields": {
                 "title": achievement.title,
@@ -86,11 +86,11 @@ def get_achievements_json(request):
                 "scale": achievement.scale,
                 "date_achieved": achievement.date_achieved,
                 "issued_by": achievement.issuer,
-                "star_count": starred_users.count(),
+                "star_count": len(starred_users),
                 "is_starred": is_starred,
                 "starred_by_names": starred_by_names,
             }
-    })
+        })
 
     return JsonResponse(data, safe=False)
 
