@@ -61,7 +61,10 @@
     const BASE_ACHIEVEMENTS_ENDPOINT = "{% url 'main:get_achievements_json' %}";
     const IS_SUPERUSER = "{{ user.is_superuser|yesno:'true,false' }}" === "true";
     let achievementsAbortController;
-
+    
+    const SEARCH_DEBOUNCE_DELAY = 300;
+    let searchDebounceTimer;
+    
     const loadingState = document.getElementById('loading');
     const errorState = document.getElementById('error');
     const emptyState = document.getElementById('empty');
