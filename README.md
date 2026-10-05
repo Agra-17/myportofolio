@@ -13,8 +13,8 @@ Projek ini dibuat sebagai website utama portofolio saya.  Website ini dibuat den
 
 ### 1. Clone the repository
 ```bash
-git clone <repository-url>
-cd portofolio
+git clone https://github.com/Agra-17/myportofolio.git
+cd myportofolio
 ```
 
 ### 2. Create a virtual environment
@@ -22,9 +22,9 @@ cd portofolio
 python -m venv env
 ```
 
-On Windows:
-```bash
-env\Scripts\activate
+On Windows (PowerShell):
+```powershell
+.\env\Scripts\Activate.ps1
 ```
 
 On macOS/Linux:
@@ -86,21 +86,31 @@ pengguna mengakses url untuk melihat data dari website portofolio dalam bentuk J
 
 Untuk alasan mengapa harus dilakukan serialization adalah kita tidak bisa mengirimkan data yang berupa objek Django secara langsung sebagai JSON. Maka dari itu peran dari serialization ini berfungsi sebagai jembatan bagi objek Django agar dapat dikirimkan oleh internet dengan cara melakukan formating kembali dengan format JSON(bisa dikirim dengan JSON)  
 
+### Assignment 4
+1. Debouncing adalah suatu teknik untuk menunda eksekusi sebuah program/fungsi hingga suatu jeda waktu tertentu tanpa adannya event baru yang masuk. Sebelum adanya debouncing ini perintah fetch akan langsung mengambil perintah by character yang di input dan membuat browser mengirim permintaan tersebut berkali kali (sesuai dengan berapa character yang di input). Hal ini dapat membuat workload/permintaan akan semakin banyak padahal yang ingin di input user biasanya berupa kata yang sudah memiliki makna dan tujuan, maka dari itu kita perlu wktu sejenak untuk menunggu input user yang lebih panjang dan tidak menyebabkan workload permintaan di server. Dengan adanya debouncing ini browser hanya mengirim permintaan setelah pengguna selesai mengetik dalam beberapa saat (bisa di atur untuk timernya).  
+
+2. Ketika kita memanggil fetch sebenarnya fungsi tersebut tidak langsung mengembalikan data, dia mengembalikan Promise terlebih dahulu. Maksud dari hal ini adalah fetch memberikan perintah kepada server nanti si servernya bakal Promise(melakukan janji) untuk memberikan hasilnya nanti. Untuk await sendiri mengontrol perintah tersebut, yang mana berarti jangan lanjutkan ke baris/argumen selanjutnya sampai Promise tadi selesai/sudah ada jawabannya. Ketika sudah menerima jawaban maka hasil dari await ini lah yang akan berupa objek Response yang nantinya akan di olah menjadi json. Jika kita tidak menggunakan await kembali/return dari fetch itu merupakan Promise(belum mendapatkan hasil atau pending) yang mana Promise nantinya tidak memiliki method json untuk dapat diubah ke bentuk json (datanya tidak dapat langsung digunakan).  
+
+3. XSS adalah serangan ketika penyerang berhasil menyisipkan kode JavaScript miliknya ke dalam halaman web yang nantinya web yang dijalankan oleh user lain akan terkena dampak dari file js tersebut. Hal ini lebih rentang terjadi di data yang di tampilkan melalui AJAX atau js karena developer seringkali memasukkan data/melakuakn input data menggunakan innerHTML dan langsung memasukkan datanya ke DOM. Selain itu, jika XSS terjadi data dari luar akan dianggap sebagai data yang boleh di eksekusi pada suatu browser. Maka dari itu developer harus secara manual memastikan data dari luar/tertentu tidak dapat dieksekusi sebagai kode pada biasanya (kita bisa handle menggunakan auto-escape atau menambahkan fungsi escape).  
+
 
 ### AI Disclosure
-Saya menggunakan AI/LLM dalam pengerjaan tugas ini. Penggunaan AI dalam tugas ini terdiri dari; pemahaman context tugas, menentukan alur pengerjaan tugas, membantu untuk melakukan debugging ketika terjadi eror (saya melakukannya dengan chatgpt). Tidak hanya lewat AI saja, saya juga mendalami maksud dari outputnya menggunakan W3school, django documentation, dan web PBP (terutama file tutorial). Penggunaan AI ini lebih sering saya gunakan ketika menemukan bug (bug yang terjadi ketika saya melakukan implementasi suatu fungsi atau melakukan perubahan), dengan penggunaan AI itu saya bisa tahu bahwa maksud dari bugnya apa (contohnya ketika saya mendapatkan bug untuk fungsi get_json_experience dan juga penambahan fitur starred_by). Selebihnya AI ini juga saya gunakan untuk melakukan pencarian secara mendalam terkait materi yang di tugaskan. 
+Saya memakai AI/LLM dalam pengerjaan tugas ini. Penggunaan AI yang ada dalam tugas ini beruba: Pemahaman tugas secara mendalam, mengenai alur tugas, pengaturan commit agar terstruktur, dan membantu untuk melakukan debugging saat eror terjadi. Saya juga meminta bantuan AI untuk membantu saya ketika adanya perubahan yang harus dilakukan seperti bedanya target perubahan yang dilakukan pada tutorial dan tugas ini. Tidak hanya dari AI, saya juga mendalami terlebih dahulu perihal tugas yang diberikan seperti javascript, XSS, debounce dsb. Saya menggunakan perantara youtube maupun link dokumentasi dari W3school atau dari djangonya langsung. Penggunaan AI ini saya lebih sering gunakan ketika mengalami eror pada program dan juga menanyakan pemahaman mendalam terkait materi yang akan ditugaskan pada tugas ini. Pada contohnya saya mengalami bug ketika get_achievement_jsonnya tidak muncul, saya juga mendapatkan bug ketika memunculkan notifikasi toast yang tidak sesuai, dan saya juga meminta bantuan AI untuk menyelaraskan UI yang saya miliki dengan feat yang baru saya buat. Selebihnya saya menggunakan AI ini sebagai teman diskusi ketika saya bingung dan ingin mengetahui secara mendalam bagaimana materi yang ditugaskan.
 
-AI assistance reference: https://chatgpt.com/share/6aba8dac-6994-83ec-a8be-17946d011067 
-AI Tools : github copilot chat and codex chat  
+AI assistance reference: https://chatgpt.com/share/6ac34d83-8070-83ec-ab1f-596ea3117cee , https://chatgpt.com/share/6ac34d48-b9e4-83ec-ae10-d281dcdd6221 , https://chatgpt.com/share/6ac34db3-e654-83ec-bd43-1301259107bf  
+AI Tools : github copilot chat, codex chat, chatGPT  
 Reference Deep Search : W3school, Youtube, dan petani kode  
 -https://www.freecodecamp.org/news/how-django-mvt-architecture-works/ 
 -https://www.w3schools.com/html/default.asp   
 -https://www.w3schools.com/css/default.asp
 -https://www.w3schools.com/django/
 -https://docs.djangoproject.com/en/6.1/    
+-https://www.w3schools.com/js/default.asp
 
 ### Progress Mingguan 
 Pada satu minggu ini progress saya terhadap web ini adalah membuat form pada bagian achievement dan juga experience. Saya juga mempelajari bagaimana user bisa melakuakn input data dan bisa langsung ditampilkan di websitenya. Pada minggu ini juga saya mendalami alur dari penggunaan data delivery berbasis JSON. Untuk perubahan yang terjadi di website tentunya ada luamyan banyak. Adanya fitur tambah experience dan juga achievement, ada fitur untuk menghapus experience dan achievement, ada juga bagian untuk mencari achievement dan experience berdasarkan nama judulnya. Beberapa tambahan UI juga dilakukan seperti notifikasi ketika melakukan delete experience atau achievement dan juga UI mengenai pengisian form (ketika menekan tombol tambah experience atau achievement).  
 
 Pada minggu ke 4 ini progress saya terhadap web ini adalah membuat fitur login, register. Fitur ini nantinya berguna untuk plotting user (superuser,editor_user,regular_user). Saya juga menambahkan fitur baru yaitu fitur star, yang mana fitur ini berfungsi untuk pemberi tanda pada experience/achiievement tertentu yang sekiranya viewer sukai. Pada minggu ini saya juga belajar melakuakn authorization dan juga restriction di beberapa menu agar tidak semua fitur bisa akses oleh user. Dalam progress minggu ini saya juga mengubah get_experience_json saya agar transfer data yang terjadi bersifat lebih aman.
+
+Pada minggu ke 5, progress saya terhadap web portofolio ini adalah menambahkan script(javascript) pada page page yang ada di portofolio ini. Fokus perubahan pada tugas ini ada di section achievement. Saya juga membuat toast, modal_form dan create_data menggunakan AJAX. Saya juga menambahkan/menerapkan prinsip debouncing di fitur pencariannya. Saya juga melakukan implementasi escapeHTML untuk melindungi aplikasi dari serangan XSS dan juga membersihkan input yang ada di server. Saya juga melakukan update di feat menampilkan data achievement yang sekarang di implementasi dengan AJAX. Pada minggu ini lebih fokus ke penerapan AJAX, implementasi JavaScripts dan perlindungan aplikasi terhadap XSS.
 
