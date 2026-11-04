@@ -39,26 +39,26 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "experience.html")
-        self.assertContains(response, self.experience.title)
-        self.assertContains(response, self.experience.description)
-        self.assertContains(response, "Part-Time")
-        self.assertContains(response, "In progress")
+        data = self.client.get(reverse("main:get_experience_json")).json()
+        self.assertEqual(data[0]["fields"]["title"], self.experience.title)
+        self.assertEqual(data[0]["fields"]["description"], self.experience.description)
+        self.assertEqual(data[0]["fields"]["category"], "Part-Time")
+        self.assertTrue(data[0]["fields"]["is_ongoing"])
         self.assertContains(response, f'href="{reverse("main:show_main")}"')
 
     def test_empty_experience_page(self):
         Experience.objects.all().delete()
         response = self.client.get(reverse("main:show_experience"))
 
-        self.assertContains(response, "Belum ada pengalaman yang ditambahkan.")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get(reverse("main:get_experience_json")).json(), [])
 
     def test_completed_experience(self):
         self.experience.ended_at = timezone.now()
         self.experience.save()
-        response = self.client.get(reverse("main:show_experience"))
-
+        response = self.client.get(reverse("main:get_experience_json"))
         self.assertFalse(self.experience.is_ongoing)
-        self.assertContains(response, "Completed")
-        self.assertNotContains(response, "In progress")
+        self.assertFalse(response.json()[0]["fields"]["is_ongoing"])
 
 class AchievementTestCase(TestCase):
 
@@ -72,7 +72,7 @@ class AchievementTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'achievements.html')
 
-    # 2. Data model muncul di halaman HTML ketika ada data
+    # 2. Halaman memuat data melalui API DRF.
     def test_achievement_data_appears_when_data_exists(self):
         Achievement.objects.create(
             title='Juara 1 Hackathon Nasional',
@@ -81,10 +81,13 @@ class AchievementTestCase(TestCase):
             date_achieved=date(2026, 3, 15)
         )
         response = self.client.get(self.achievement_url)
-        self.assertContains(response, 'Juara 1 Hackathon Nasional')
-        self.assertContains(response, 'Kominfo')
+        self.assertContains(response, reverse('api:achievement-list'))
+        data = self.client.get(reverse('api:achievement-list')).json()
+        self.assertEqual(data[0]['title'], 'Juara 1 Hackathon Nasional')
+        self.assertEqual(data[0]['issuer'], 'Kominfo')
 
     # 3. Halaman HTML menampilkan pesan kondisi kosong ketika belum ada data
     def test_empty_message_shown_when_no_data(self):
         response = self.client.get(self.achievement_url)
-        self.assertContains(response, 'Belum ada achievement yang ditambahkan.')
+        self.assertContains(response, 'Belum ada achievement yang ditambahkan atau ditemukan.')
+        self.assertEqual(self.client.get(reverse('api:achievement-list')).json(), [])
