@@ -3,6 +3,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import (
     api_view, authentication_classes, permission_classes,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from main.models import Achievement
@@ -50,4 +51,17 @@ def achievement_detail(request, achievement_id):
     )
     serializer.is_valid(raise_exception=True)
     serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def achievement_star(request, achievement_id):
+    achievement = get_object_or_404(Achievement, pk=achievement_id)
+    if achievement.starred_by.filter(pk=request.user.pk).exists():
+        achievement.starred_by.remove(request.user)
+    else:
+        achievement.starred_by.add(request.user)
+    serializer = AchievementSerializer(achievement, context={"request": request})
     return Response(serializer.data)
