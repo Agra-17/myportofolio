@@ -159,57 +159,57 @@
     }
 
     async function fetchExperiences(searchQuery = '') {
-    if (experiencesAbortController) {
-        experiencesAbortController.abort();
-    }
-
-    experiencesAbortController = new AbortController();
-
-    try {
-        displayPageSection({ showLoading: true });
-
-        const url = new URL(
-            BASE_EXPERIENCES_ENDPOINT,
-            window.location.origin,
-        );
-
-        if (searchQuery) {
-            url.searchParams.set('title', searchQuery);
+        if (experiencesAbortController) {
+            experiencesAbortController.abort();
         }
 
-        const response = await fetch(url, {
-            headers: {
-                Accept: 'application/json',
-            },
-            signal: experiencesAbortController.signal,
-        });
+        experiencesAbortController = new AbortController();
 
-        if (!response.ok) {
-            throw new Error(
-                `Gagal memuat experience (HTTP ${response.status}).`
+        try {
+            displayPageSection({ showLoading: true });
+
+            const url = new URL(
+                BASE_EXPERIENCES_ENDPOINT,
+                window.location.origin,
             );
+
+            if (searchQuery) {
+                url.searchParams.set('title', searchQuery);
+            }
+
+            const response = await fetch(url, {
+                headers: {
+                    Accept: 'application/json',
+                },
+                signal: experiencesAbortController.signal,
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    `Gagal memuat experience (HTTP ${response.status}).`
+                );
+            }
+
+            const experiences = await response.json();
+
+            gridContainer.replaceChildren(
+                ...experiences.map(buildExperienceCardElement)
+            );
+
+            experienceCount.textContent =
+                `${experiences.length} experiences`;
+
+            displayPageSection({
+                showGrid: experiences.length > 0,
+                showEmpty: experiences.length === 0,
+            });
+        } catch (error) {
+            if (error.name === 'AbortError') return;
+
+            console.error('Error loading experiences:', error);
+            displayPageSection({ showError: true });
         }
-
-        const experiences = await response.json();
-
-        gridContainer.replaceChildren(
-            ...experiences.map(buildExperienceCardElement)
-        );
-
-        experienceCount.textContent =
-            `${experiences.length} experiences`;
-
-        displayPageSection({
-            showGrid: experiences.length > 0,
-            showEmpty: experiences.length === 0,
-        });
-    } catch (error) {
-        if (error.name === 'AbortError') return;
-
-        console.error('Error loading experiences:', error);
-        displayPageSection({ showError: true });
     }
-}
 
     function searchExperience(){
         fetchExperiences(searchInput.value.trim());
