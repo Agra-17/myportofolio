@@ -102,41 +102,37 @@ def experience_list(request):
         status=status.HTTP_201_CREATED,
     )
 
-
-@api_view(["GET", "HEAD", "POST"])
+@api_view(["GET", "HEAD", "PUT", "PATCH", "DELETE"])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
-def experience_list(request):
+def experience_detail(request, experience_id):
+    experience = get_object_or_404(
+        Experience.objects.prefetch_related("starred_by"),
+        pk=experience_id,
+    )
+
     if request.method in ("GET", "HEAD"):
-        experiences = (
-            Experience.objects
-            .prefetch_related("starred_by")
-            .order_by("title", "id")
-        )
-
-        title = request.query_params.get("title", "").strip()
-
-        if title:
-            experiences = experiences.filter(title__icontains=title)
-
         serializer = ExperienceSerializer(
-            experiences,
-            many=True,
+            experience,
             context={"request": request},
         )
         return Response(serializer.data)
 
+    if request.method == "DELETE":
+        experience.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     serializer = ExperienceSerializer(
+        experience,
         data=request.data,
+        partial=request.method == "PATCH",
         context={"request": request},
     )
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
-    return Response(
-        serializer.data,
-        status=status.HTTP_201_CREATED,
-    )
+    return Response(serializer.data)
+
 
 @api_view(["POST"])
 @authentication_classes([SessionAuthentication])
