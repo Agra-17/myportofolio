@@ -47,7 +47,7 @@
 </main>
 
 <script>
-    const BASE_EXPERIENCES_ENDPOINT = "{% url 'main:get_experience_json' %}";
+    const BASE_EXPERIENCES_ENDPOINT = "{% url 'api:experience-list' %}";
     const IS_SUPERUSER = "{{ user.is_superuser|yesno:'true,false' }}" === "true";
     const IS_EDITOR = "{{ is_editor|yesno:'true,false' }}" === "true";
 
@@ -79,9 +79,22 @@
             .replaceAll("'", '&#39;');
     }
 
+    function formatExperienceDate(value) {
+    if (!value) return '';
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) return '';
+
+    return new Intl.DateTimeFormat('id-ID', {
+        month: 'short',
+        year: 'numeric',
+    }).format(date);
+}
+
     function buildExperienceCardElement(item, index) {
-        const experience = item.fields;
-        const experienceId = item.pk;
+        const experience = item;
+        const experienceId = experience.id;
 
         const articleElement = document.createElement('article');
         articleElement.className = 'experience-card';
@@ -111,8 +124,7 @@
         const starTitle = experience.star_count > 0
             ? `Dibintangi oleh ${escapeHtml(experience.starred_by_names)}`
             : "Jadilah yang pertama memberi star";
-        const dateRange = [experience.started_at, experience.ended_at].filter(Boolean).join(' - ');
-
+        const dateRange = [formatExperienceDate(experience.started_at),formatExperienceDate(experience.ended_at),].filter(Boolean).join(' - ');
         const completeCardHtml = `
             <div class="experience-card-top">
                 <span class="experience-number">${index + 1}</span>
@@ -120,7 +132,7 @@
             ${imageHtml}
             <div class="experience-card-body">
                 <h2>${escapeHtml(experience.title)}</h2>
-                <span class="experience-category">${escapeHtml(experience.category)}</span>
+                <span class="experience-category">${escapeHtml(experience.category_display)}</span>
                 <p class="experience-description">${escapeHtml(experience.description)}</p>
                 <div class="experience-card-footer">
                     <span>${escapeHtml(dateRange)}</span>
@@ -147,42 +159,57 @@
     }
 
     async function fetchExperiences(searchQuery = '') {
-        if (experiencesAbortController) experiencesAbortController.abort();
-        experiencesAbortController = new AbortController();
-
-        try {
-            displayPageSection({ showLoading: true });
-
-            const url = searchQuery
-                ? `${BASE_EXPERIENCES_ENDPOINT}?title=${encodeURIComponent(searchQuery)}`
-                : BASE_EXPERIENCES_ENDPOINT;
-
-            const response = await fetch(url, {
-                headers: { 'Accept': 'application/json' },
-                signal: experiencesAbortController.signal,
-            });
-
-            if (!response.ok) throw new Error('Failed to fetch data');
-
-            const experienceData = await response.json();
-
-            if (experienceData.length === 0) {
-                experienceCount.textContent = '0 experiences';
-                displayPageSection({ showEmpty: true });
-            } else {
-                gridContainer.innerHTML = '';
-                experienceData.forEach((item, index) => {
-                    gridContainer.appendChild(buildExperienceCardElement(item, index));
-                });
-                experienceCount.textContent = `${experienceData.length} experiences`;
-                displayPageSection({ showGrid: true });
-            }
-        } catch (error) {
-            if (error.name === 'AbortError') return;
-            console.error('Error loading experiences:', error);
-            displayPageSection({ showError: true });
-        }
+    if (experiencesAbortController) {
+        experiencesAbortController.abort();
     }
+
+    experiencesAbortController = new AbortController();
+
+    try {
+        displayPageSection({ showLoading: true });
+
+        const url = new URL(
+            BASE_EXPERIENCES_ENDPOINT,
+            window.location.origin,
+        );
+
+        if (searchQuery) {
+            url.searchParams.set('title', searchQuery);
+        }
+
+        const response = await fetch(url, {
+            headers: {
+                Accept: 'application/json',
+            },
+            signal: experiencesAbortController.signal,
+        });
+
+        if (!response.ok) {
+            throw new Error(
+                `Gagal memuat experience (HTTP ${response.status}).`
+            );
+        }
+
+        const experiences = await response.json();
+
+        gridContainer.replaceChildren(
+            ...experiences.map(buildExperienceCardElement)
+        );
+
+        experienceCount.textContent =
+            `${experiences.length} experiences`;
+
+        displayPageSection({
+            showGrid: experiences.length > 0,
+            showEmpty: experiences.length === 0,
+        });
+    } catch (error) {
+        if (error.name === 'AbortError') return;
+
+        console.error('Error loading experiences:', error);
+        displayPageSection({ showError: true });
+    }
+}
 
     function searchExperience(){
         fetchExperiences(searchInput.value.trim());
