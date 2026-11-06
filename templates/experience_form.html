@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_css %}
-    <link rel="stylesheet" href="/static/css/styleformAchievements.css">
+    <link rel="stylesheet" href="{% static 'css/styleformAchievements.css' %}">
     <title>{% if is_edit %}Edit Experience{% else %}Add Experience{% endif %} - {{ name }}</title>
 {% endblock extra_css %}
 {% block content %}
@@ -9,7 +9,7 @@
         <section class="experience-section">
             <div class="container">
                 <h1>{% if is_edit %}Edit Experience{% else %}Add New Experience{% endif %}</h1>
-                <form method="post"
+                <form id="experience-page-form" method="post"
                       action="{% if is_edit %}{% url 'main:update_experience' experience.id %}{% else %}{% url 'main:create_experience' %}{% endif %}"
                       class="experience-form">
                     {% csrf_token %}
@@ -22,10 +22,123 @@
                             {% endfor %}
                         </div>
                     {% endfor %}
-                    <button type="submit" class="button">{% if is_edit %}Simpan Perubahan{% else %}Tambah Experience{% endif %}</button>
+                    <button id="experience-page-submit" type="submit" class="button"
+                        {% if is_edit %}disabled{% endif %}>
+                        {% if is_edit %}Simpan Perubahan{% else %}Tambah Experience{% endif %}
+                    </button>
                     <a href="{% url 'main:show_experience' %}" class="button button-secondary">Batal</a>
                 </form>
             </div>
         </section>
     </main>
+{% if is_edit %}
+<script>
+    function getCookie(name) {
+        const prefix = `${name}=`;
+        const cookie = document.cookie.split(';').map(value => value.trim())
+            .find(value => value.startsWith(prefix));
+        return cookie ? decodeURIComponent(cookie.slice(prefix.length)) : null;
+    }
+
+    function apiErrorMessage(data, status) {
+        const messages = Object.values(data).flat().filter(value => typeof value === 'string');
+        return messages.join(' ') || `Permintaan gagal (HTTP ${status}).`;
+    }
+
+    async function writeExperience(url, method, payload) {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: payload === undefined ? undefined : JSON.stringify(payload),
+        });
+        if (response.status === 204) return null;
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(apiErrorMessage(data, response.status));
+        return data;
+    }
+
+    const endpoint = "{% url 'api:experience-detail' experience.id %}";
+    const form = document.getElementById('experience-page-form');
+    const submitButton = document.getElementById('experience-page-submit');
+    const textFields = ['title', 'description', 'category', 'thumbnail'];
+    const dateFields = ['started_at', 'ended_at'];
+    let originalValues = {};
+    let ready = false;
+
+    function toLocalDateTimeInput(value) {
+        if (!value) return '';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return localDate.toISOString().slice(0, -1);
+    }
+
+    async function loadExperience() {
+        try {
+            const response = await fetch(endpoint, {
+                headers: { Accept: 'application/json' },
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                throw new Error(apiErrorMessage(data, response.status));
+            }
+            for (const name of textFields) {
+                const input = form.elements.namedItem(name);
+                input.value = data[name] ?? '';
+                originalValues[name] = input.value;
+            }
+            for (const name of dateFields) {
+                const input = form.elements.namedItem(name);
+                input.type = 'datetime-local';
+                input.step = 'any';
+                input.value = toLocalDateTimeInput(data[name]);
+                originalValues[name] = input.value;
+            }
+            ready = true;
+            submitButton.disabled = false;
+        } catch (error) {
+            showToast('Gagal memuat data edit',
+                `${error.message} Muat ulang halaman untuk mencoba lagi.`, 'error');
+        }
+    }
+
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        if (!ready || submitButton.disabled) return;
+        submitButton.disabled = true;
+        try {
+            const payload = {};
+            for (const name of textFields) {
+                const value = form.elements.namedItem(name).value;
+                if (value !== originalValues[name]) payload[name] = value;
+            }
+            for (const name of dateFields) {
+                const value = form.elements.namedItem(name).value;
+                if (value !== originalValues[name]) {
+                    payload[name] = value ? new Date(value).toISOString() : null;
+                }
+            }
+            if (Object.keys(payload).length === 0) {
+                showToast('Informasi', 'Belum ada perubahan untuk disimpan.', 'normal');
+                return;
+            }
+            await writeExperience(endpoint, 'PATCH', payload);
+            for (const name of [...textFields, ...dateFields]) {
+                originalValues[name] = form.elements.namedItem(name).value;
+            }
+            showToast('Berhasil', 'Experience berhasil diperbarui.', 'success');
+        } catch (error) {
+            showToast('Gagal memperbarui experience', error.message, 'error');
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+
+    loadExperience();
+</script>
+{% endif %}
 {% endblock content %}
