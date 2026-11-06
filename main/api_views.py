@@ -137,3 +137,23 @@ def experience_list(request):
         serializer.data,
         status=status.HTTP_201_CREATED,
     )
+
+@api_view(["POST"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def experience_star(request, experience_id):
+    experience = get_object_or_404(
+        Experience,
+        pk=experience_id,
+    )
+
+    if experience.starred_by.filter(pk=request.user.pk).exists():
+        experience.starred_by.remove(request.user)
+    else:
+        experience.starred_by.add(request.user)
+
+    serializer = ExperienceSerializer(
+        experience,
+        context={"request": request},
+    )
+    return Response(serializer.data)
