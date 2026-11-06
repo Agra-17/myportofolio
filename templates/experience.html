@@ -44,6 +44,87 @@
     {% if user.is_superuser %}
         {% include "components/experience_form_modal.html" %}
     {% endif %}
+
+    {% if user.is_superuser or is_editor %}
+    <dialog id="edit-experience-modal" class="experience-edit-dialog">
+        <h2>Edit Experience</h2>
+
+        <form id="edit-experience-form">
+            {% csrf_token %}
+
+            <p>
+                <label for="edit-experience-title">Nama Experience</label>
+                <input
+                    id="edit-experience-title"
+                    name="title"
+                    type="text"
+                    maxlength="255"
+                    required>
+            </p>
+
+            <p>
+                <label for="edit-experience-description">Deskripsi</label>
+                <textarea
+                    id="edit-experience-description"
+                    name="description"
+                    rows="4"
+                    required></textarea>
+            </p>
+
+            <p>
+                <label for="edit-experience-category">Kategori</label>
+                <select
+                    id="edit-experience-category"
+                    name="category"
+                    required>
+                    {% for value, label in form.category.field.choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <label for="edit-experience-thumbnail">URL Gambar</label>
+                <input
+                    id="edit-experience-thumbnail"
+                    name="thumbnail"
+                    type="url">
+            </p>
+
+            <p>
+                <label for="edit-experience-started-at">Tanggal Mulai</label>
+                <input
+                    id="edit-experience-started-at"
+                    name="started_at"
+                    type="datetime-local"
+                    step="any">
+            </p>
+
+            <p>
+                <label for="edit-experience-ended-at">Tanggal Selesai</label>
+                <input
+                    id="edit-experience-ended-at"
+                    name="ended_at"
+                    type="datetime-local"
+                    step="any">
+            </p>
+
+            <div>
+                <button
+                    type="button"
+                    id="cancel-edit-experience"
+                    class="button button-secondary">
+                    Batal
+                </button>
+
+                <button type="submit" class="button">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </dialog>
+    {% endif %}
+
 </main>
 
 {% csrf_token %}
