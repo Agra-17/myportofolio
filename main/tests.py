@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -39,12 +40,56 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "experience.html")
-        data = self.client.get(reverse("main:get_experience_json")).json()
-        self.assertEqual(data[0]["fields"]["title"], self.experience.title)
-        self.assertEqual(data[0]["fields"]["description"], self.experience.description)
-        self.assertEqual(data[0]["fields"]["category"], "Part-Time")
-        self.assertTrue(data[0]["fields"]["is_ongoing"])
+        self.assertContains(response, reverse("api:experience-list"))
+        self.assertContains(response, "fetchExperiences(searchInput.value.trim())")
+        self.assertContains(response, "buildExperienceCardElement")
+        self.assertNotContains(response, "experience-page-submit")
+        data = self.client.get(reverse("api:experience-list")).json()
+        self.assertEqual(data[0]["title"], self.experience.title)
+        self.assertEqual(data[0]["description"], self.experience.description)
+        self.assertEqual(data[0]["category_display"], "Part-Time")
+        self.assertTrue(data[0]["is_ongoing"])
         self.assertContains(response, f'href="{reverse("main:show_main")}"')
+
+    def test_experience_list_script_available_for_each_role(self):
+        regular = User.objects.create_user(username="regular-page")
+        editor = User.objects.create_user(username="editor-page")
+        editor.groups.add(Group.objects.create(name="Editor"))
+        owner = User.objects.create_user(username="owner-page", is_superuser=True)
+        for user in (None, regular, editor, owner):
+            with self.subTest(user=user):
+                self.client.logout()
+                if user is not None:
+                    self.client.force_login(user)
+                response = self.client.get(reverse("main:show_experience"))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, reverse("api:experience-list"))
+                self.assertContains(response, "function fetchExperiences")
+                self.assertContains(response, "function writeExperience")
+                self.assertContains(response, "X-CSRFToken")
+                self.assertNotContains(response, "experience-page-submit")
+                self.assertIn("csrftoken", response.cookies)
+
+    def test_experience_edit_uses_existing_form_and_patch(self):
+        editor = User.objects.create_user(username="editor-edit")
+        editor.groups.add(Group.objects.create(name="Editor"))
+        owner = User.objects.create_user(username="owner-edit", is_superuser=True)
+        regular = User.objects.create_user(username="regular-edit")
+        url = reverse("main:update_experience", args=[self.experience.id])
+        for user in (editor, owner):
+            with self.subTest(user=user):
+                self.client.force_login(user)
+                response = self.client.get(url)
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(response, "experience_form.html")
+                self.assertContains(response, "experience-page-form")
+                self.assertContains(response, "'PATCH'")
+                self.assertContains(response, reverse("api:experience-detail", args=[self.experience.id]))
+                self.assertContains(response, "X-CSRFToken")
+        self.client.force_login(regular)
+        self.assertEqual(self.client.get(url).status_code, 403)
+        self.client.logout()
+        self.assertEqual(self.client.get(url).status_code, 302)
 
     def test_empty_experience_page(self):
         Experience.objects.all().delete()
