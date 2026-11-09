@@ -223,6 +223,38 @@
     color: var(--accent-dark);
 }
 
+.experience-edit-dialog {
+    width: min(560px, calc(100% - 32px));
+    max-height: 85vh;
+    overflow-y: auto;
+    margin: auto;
+    padding: 24px;
+    border: 0;
+    border-radius: 16px;
+    background: #fff;
+    color: #222;
+}
+
+.experience-edit-dialog::backdrop {
+    background: rgb(0 0 0 / 55%);
+}
+
+.experience-edit-dialog label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.experience-edit-dialog input,
+.experience-edit-dialog textarea,
+.experience-edit-dialog select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font: inherit;
+}
+
 @media (max-width: 600px) {
     .experience-form-modal {
         align-items: flex-end;
