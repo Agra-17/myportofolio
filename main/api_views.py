@@ -1,8 +1,5 @@
 from rest_framework import status
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.decorators import (
-    api_view, authentication_classes, permission_classes,
-)
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -13,7 +10,6 @@ from main.serializers import AchievementSerializer, ExperienceSerializer
 
 
 @api_view(["GET", "HEAD", "POST"])
-@authentication_classes([SessionAuthentication])
 @permission_classes([IsPortfolioOwnerOrReadOnly])
 def achievement_list(request):
     if request.method in ("GET", "HEAD"):
@@ -32,7 +28,6 @@ def achievement_list(request):
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(["GET", "HEAD", "PUT", "PATCH", "DELETE"])
-@authentication_classes([SessionAuthentication])
 @permission_classes([IsPortfolioOwnerOrReadOnly])
 def achievement_detail(request, achievement_id):
     achievement = get_object_or_404(
@@ -56,7 +51,6 @@ def achievement_detail(request, achievement_id):
 
 
 @api_view(["POST"])
-@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def achievement_star(request, achievement_id):
     achievement = get_object_or_404(Achievement, pk=achievement_id)
@@ -68,7 +62,6 @@ def achievement_star(request, achievement_id):
     return Response(serializer.data)
 
 @api_view(["GET", "HEAD", "POST"])
-@authentication_classes([SessionAuthentication])
 @permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
 def experience_list(request):
     if request.method in ("GET", "HEAD"):
@@ -103,7 +96,6 @@ def experience_list(request):
     )
 
 @api_view(["GET", "HEAD", "PUT", "PATCH", "DELETE"])
-@authentication_classes([SessionAuthentication])
 @permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
 def experience_detail(request, experience_id):
     experience = get_object_or_404(
@@ -135,7 +127,6 @@ def experience_detail(request, experience_id):
 
 
 @api_view(["POST"])
-@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def experience_star(request, experience_id):
     experience = get_object_or_404(
@@ -153,3 +144,11 @@ def experience_star(request, experience_id):
         context={"request": request},
     )
     return Response(serializer.data)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def api_logout(request):
+    if request.auth is not None:
+        request.auth.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

@@ -6,3 +6,4 @@ urllib3
 python-dotenv
 djangorestframework~=3.18.3
 django~=5.2
+django-cors-headers

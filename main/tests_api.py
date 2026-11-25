@@ -47,9 +47,11 @@ class AchievementAPITest(APITestCase):
     def test_guest_and_visitor_cannot_write(self):
         for user in (None, self.visitor):
             self.client.force_authenticate(user=user)
-            self.assertEqual(self.client.post(self.list_url, self.payload, format="json").status_code, 403)
-            self.assertEqual(self.client.patch(self.detail_url, {"title": "Changed"}, format="json").status_code, 403)
-            self.assertEqual(self.client.delete(self.detail_url).status_code, 403)
+            # Guest (belum login) -> 401, user tanpa izin -> 403
+            expected = 401 if user is None else 403
+            self.assertEqual(self.client.post(self.list_url, self.payload, format="json").status_code, expected)
+            self.assertEqual(self.client.patch(self.detail_url, {"title": "Changed"}, format="json").status_code, expected)
+            self.assertEqual(self.client.delete(self.detail_url).status_code, expected)
         self.assertEqual(Achievement.objects.count(), 1)
         self.achievement.refresh_from_db()
         self.assertEqual(self.achievement.title, "National Competition")
@@ -89,7 +91,7 @@ class AchievementAPITest(APITestCase):
         self.assertFalse(Achievement.objects.filter(pk=self.achievement.id).exists())
 
     def test_star_requires_login_and_toggles(self):
-        self.assertEqual(self.client.post(self.star_url).status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(self.client.post(self.star_url).status_code, status.HTTP_401_UNAUTHORIZED)
         self.client.force_authenticate(user=self.visitor)
         response = self.client.post(self.star_url)
         self.assertTrue(response.data["is_starred"])
@@ -228,30 +230,32 @@ class ExperienceAPITest(APITestCase):
     def test_guest_and_regular_cannot_write(self):
         for user in (None, self.regular):
             self.client.force_authenticate(user=user)
+            # Guest (belum login) -> 401, user tanpa izin -> 403
+            expected = 401 if user is None else 403
 
             response = self.client.post(
                 self.list_url,
                 self.payload,
                 format="json",
             )
-            self.assertEqual(response.status_code, 403)
+            self.assertEqual(response.status_code, expected)
 
             response = self.client.patch(
                 self.detail_url,
                 {"title": "Diubah tanpa izin"},
                 format="json",
             )
-            self.assertEqual(response.status_code, 403)
+            self.assertEqual(response.status_code, expected)
 
             response = self.client.put(
                 self.detail_url,
                 self.payload,
                 format="json",
             )
-            self.assertEqual(response.status_code, 403)
+            self.assertEqual(response.status_code, expected)
 
             response = self.client.delete(self.detail_url)
-            self.assertEqual(response.status_code, 403)
+            self.assertEqual(response.status_code, expected)
 
             self.assertEqual(Experience.objects.count(), 1)
             self.experience.refresh_from_db()
@@ -393,7 +397,7 @@ class ExperienceAPITest(APITestCase):
 
     def test_star_requires_login_and_toggles(self):
         response = self.client.post(self.star_url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
         self.assertEqual(self.experience.starred_by.count(), 0)
 
         for user in (self.regular, self.editor, self.owner):
